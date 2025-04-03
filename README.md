@@ -35,6 +35,7 @@ A aplicação poderá integrar qualquer front-end desenvolvido para esse fim, de
 5. Clone o repositório localmente:
 
 ```bash
+git init
 git clone https://github.com/Doug2704/GestaoDeIncidentes.git
 ```
 
