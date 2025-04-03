@@ -32,11 +32,12 @@ A aplicação poderá integrar qualquer front-end desenvolvido para esse fim, de
 3. Instale o PostgreSQL localmente.
 4. Instale o Postman.
 
-5. Clone o repositório localmente:
+5. Crie uma pasta dedicada ao projeto e aceese-a pelo terminal de comando.
+6. Clone o repositório localmente:
 
 ```bash
-git init
 git clone https://github.com/Doug2704/GestaoDeIncidentes.git
+cd GestaoDeIncidentes
 ```
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.1. Para os colaboradores oficiais do projeto, será disponibilizada a branch dev para envio de alterações. 
