@@ -40,7 +40,7 @@ git clone https://github.com/Doug2704/GestaoDeIncidentes.git
 cd GestaoDeIncidentes
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.1. Para os colaboradores oficiais do projeto, será disponibilizada a branch dev para envio de alterações. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.1. Para os colaboradores oficiais do projeto, será disponibilizada a branch dev para envio de alterações. 
 Então, após clonar o repositário, execute os comandos:
 
 ```bash
