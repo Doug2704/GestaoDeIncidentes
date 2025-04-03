@@ -29,7 +29,7 @@ A aplicação poderá integrar qualquer front-end desenvolvido para esse fim, de
 
 1. Instale o Java na versão 17.
 2. Instale sua IDE favorita (recomendo Intellij IDEA).
-3. Instale o PostgreSQL localmente.
+3. Instale o PostgreSQL localmente.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1 Crie um banco de dados com o nome incidentes.
 5. Instale o Postman.
 6. Crie uma pasta dedicada ao projeto e aceese-a pelo terminal de comando.
@@ -40,7 +40,7 @@ git clone https://github.com/Doug2704/GestaoDeIncidentes.git
 cd GestaoDeIncidentes
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.1. Para os colaboradores oficiais do projeto, será disponibilizada a branch dev para envio de alterações. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7.1. Para os colaboradores oficiais do projeto, será disponibilizada a branch dev para envio de alterações. 
 Então, após clonar o repositário, execute os comandos:
 
 ```bash
@@ -59,8 +59,8 @@ git pull
 2. A aplicação estará acessível em http://localhost:8080 em sua máquina ou na porta que for configurada.
 **obs**: Verifique se há alguma aplicação utilizando a referida porta localmente e altere conforme a necessidade.
 3. Execute a aplicação.
-4. Altere o código conforme a necessidade e configure as requisições no controlador. Por exemplo "api/v1/users" para listar usuários.
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.1. Teste as requisições via Postman (ou testador de API de sua escolha). Por exemplo: "http://localhost:8080/api/v1/users" para consumir a requisição.
+4. Altere o código conforme a necessidade e configure as requisições no controlador. Por exemplo "api/v1/users" para listar usuários.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.1. Teste as requisições via Postman (ou testador de API de sua escolha). Por exemplo: "http://localhost:8080/api/v1/users" para consumir a requisição.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.2. Em caso de documentação Swagger, as requisições poderãm ser testadas em "http://localhost:8080/swagger-ui/index.html"
 
 ### (Para Usuários)
