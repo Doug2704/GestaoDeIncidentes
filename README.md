@@ -31,16 +31,16 @@ A aplicação poderá integrar qualquer front-end desenvolvido para esse fim, de
 2. Instale sua IDE favorita (recomendo Intellij IDEA).
 3. Instale o PostgreSQL localmente.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1 Crie um banco de dados com o nome incidentes.
-5. Instale o Postman.
-6. Crie uma pasta dedicada ao projeto e aceese-a pelo terminal de comando.
-7. Clone o repositório localmente:
+4. Instale o Postman.
+5. Crie uma pasta dedicada ao projeto e aceese-a pelo terminal de comando.
+6. Clone o repositório localmente:
 
 ```bash
 git clone https://github.com/Doug2704/GestaoDeIncidentes.git
 cd GestaoDeIncidentes
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7.1. Para os colaboradores oficiais do projeto, será disponibilizada a branch dev para envio de alterações. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.1. Para os colaboradores oficiais do projeto, será disponibilizada a branch dev para envio de alterações. 
 Então, após clonar o repositário, execute os comandos:
 
 ```bash
