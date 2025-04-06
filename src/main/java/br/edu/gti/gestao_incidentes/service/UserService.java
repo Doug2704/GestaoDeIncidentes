@@ -16,6 +16,7 @@ public class UserService {
 
     @Autowired
     public UserRepository userRepository;
+    private final String entidade = "usuário";
 
     public User createUser(User user) {
 
@@ -27,7 +28,7 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        User usuarioEncontrado = userRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException("entidade"));
+        User usuarioEncontrado = userRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(entidade));
         return usuarioEncontrado;
     }
 
@@ -36,7 +37,7 @@ public class UserService {
     }
 
     public User updateUser(Long id, User user) {
-        User usuarioEncontrado = userRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException("entidade"));
+        User usuarioEncontrado = userRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(entidade));
 
         if (user.getName() != null) usuarioEncontrado.setName(user.getName());
         if (user.getEmail() != null) usuarioEncontrado.setEmail(user.getEmail());
@@ -46,7 +47,7 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
-        User usuarioEncontrado = userRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException("entidade"));
+        User usuarioEncontrado = userRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(entidade));
         userRepository.delete(usuarioEncontrado);
     }
 }
