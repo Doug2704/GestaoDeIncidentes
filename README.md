@@ -22,7 +22,7 @@ Está sob a licensa MIT - livre para qualquer finalidade. Reservado o direito de
 ## Introdução
 
 Esse projeto tem como finalidade gerenciar incidentes em empresas, a fim de documentar medidas a serem tomadas de acordo com o evento ocorrido.
-Desenvolvido iniciamente, com a colaboração de Josué Soares (https://github.com/Doutrinador08) e Jackson Santos () para conclusão das UCs Processos e Projetos de TI e Governança e Serviços de TI, onde abordamos conceitos de ITIL, com toda a documentação do projeto e do processo elaborada previamente.
+Desenvolvido iniciamente, com a colaboração de Josué Soares (https://github.com/Doutrinador08) e Jackson Santos (https://github.com/jackson8119) para conclusão das UCs Processos e Projetos de TI e Governança e Serviços de TI, onde abordamos conceitos de ITIL, com toda a documentação do projeto e do processo elaborada previamente.
 A aplicação poderá integrar qualquer front-end desenvolvido para esse fim, desde que atenda os requisitos de consumo de APIs Rest.
 
 ## Instalação
