@@ -8,14 +8,16 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public abstract class User implements Serializable {
+@Entity
+@Table(name = "users")
+public class User implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
-    private Long adminId;
+    private Long id;
 
     @Column(nullable = false, name = "nome")
     private String name;
@@ -28,12 +30,55 @@ public abstract class User implements Serializable {
 
     @Column(nullable = false, name = "data_registro")
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
-    private LocalDateTime registrationDate = LocalDateTime.now();
+    private LocalDateTime registrationDate;
 
     @Column(nullable = false, name = "role")
     private Role role;
 
-    protected void setRole(Role role) {
+    private void setRole(Role role) {
         this.role = role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public LocalDateTime getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(LocalDateTime registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public User() {
     }
 }
