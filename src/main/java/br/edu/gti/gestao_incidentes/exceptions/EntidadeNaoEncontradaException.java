@@ -4,6 +4,6 @@ import jakarta.persistence.EntityNotFoundException;
 
 public class EntidadeNaoEncontradaException extends EntityNotFoundException {
     public EntidadeNaoEncontradaException(String entidade){
-        super(entidade + "não existe no banco de dados");
+        super(entidade + " inexistente");
     }
 }
