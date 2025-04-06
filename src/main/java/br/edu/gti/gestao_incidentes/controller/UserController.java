@@ -4,6 +4,7 @@ import br.edu.gti.gestao_incidentes.entities.User;
 import br.edu.gti.gestao_incidentes.exceptions.EntidadeNaoEncontradaException;
 import br.edu.gti.gestao_incidentes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +25,14 @@ public class UserController {
             User usuarioSalvo = userService.createUser(user);
             URI local = URI.create("/" + usuarioSalvo.getId());
             return ResponseEntity.created(local).body(usuarioSalvo);
-        } catch (RuntimeException e) {
+
+        }catch (DataIntegrityViolationException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Esse email já está cadastrado");
+        }
+        catch (RuntimeException e) {
             return ResponseEntity.ok(e.getMessage());
         }
+
     }
 
     @GetMapping("/{id}")
