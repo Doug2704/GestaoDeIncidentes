@@ -35,7 +35,7 @@ public class User implements Serializable {
     @Column(nullable = false, name = "role")
     private Role role;
 
-    private void setRole(Role role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
