@@ -1,84 +1,46 @@
 package br.edu.gti.gestao_incidentes.entities;
 
-import br.edu.gti.gestao_incidentes.enums.Role;
+import br.edu.gti.gestao_incidentes.enums.Area;
+import br.edu.gti.gestao_incidentes.enums.Profile;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
+@Getter
+@Setter
+//TODO implementar lógica de autenticação de usuário
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario")
+    @Column(name = "id_user")
     private Long id;
 
-    @Column(nullable = false, name = "nome")
+    @Column(nullable = false, name = "name")
     private String name;
 
     @Column(nullable = false, unique = true, name = "email")
     private String email;
 
-    @Column(nullable = false, name = "senha")
+    @Column(nullable = false, name = "password")
     private String password;
 
-    @Column(nullable = false, name = "data_registro")
+    @OneToOne
+    @JoinColumn(name = "actuation_area_id")
+    private Area actuationArea;
+
+    @Column(nullable = false, name = "registration_date")
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
-    private LocalDateTime registrationDate;
+    private LocalDateTime dataRegistro = LocalDateTime.now();
 
-    @Column(nullable = false, name = "role")
-    private Role role;
+    @Column(nullable = false, name = "profile")
+    private Profile profile;
 
-    private void setRole(Role role) {
-        this.role = role;
-    }
+    //TODO implementar método para setar papel de usuário automáticamente
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public LocalDateTime getRegistrationDate() {
-        return registrationDate;
-    }
-
-    public void setRegistrationDate(LocalDateTime registrationDate) {
-        this.registrationDate = registrationDate;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public User() {
-    }
 }

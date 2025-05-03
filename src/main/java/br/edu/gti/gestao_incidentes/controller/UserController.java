@@ -1,7 +1,7 @@
 package br.edu.gti.gestao_incidentes.controller;
 
 import br.edu.gti.gestao_incidentes.entities.User;
-import br.edu.gti.gestao_incidentes.exceptions.EntidadeNaoEncontradaException;
+import br.edu.gti.gestao_incidentes.exceptions.EntityNotFoundException;
 import br.edu.gti.gestao_incidentes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,15 +19,15 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
+    @PostMapping("/criar")
     public ResponseEntity<?> criarUsuario(@RequestBody User user) {
         try {
-            User usuarioSalvo = userService.createUser(user);
-            URI local = URI.create("/" + usuarioSalvo.getId());
-            return ResponseEntity.created(local).body(usuarioSalvo);
+
+            URI local = URI.create("/" + savedUser.getId());
+            return ResponseEntity.created(local).body(savedUser);
 
         }catch (DataIntegrityViolationException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Esse email já está cadastrado");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
         catch (RuntimeException e) {
             return ResponseEntity.ok(e.getMessage());
@@ -41,23 +41,23 @@ public class UserController {
             User usuarioEncontrado = userService.findById(id);
             return ResponseEntity.ok(usuarioEncontrado);
 
-        } catch (EntidadeNaoEncontradaException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.ok(e.getMessage());
         }
     }
 
     @GetMapping
     public ResponseEntity<List<User>> buscarUsuarios() {
-        List<User> usuarios = userService.findAll();
-        return ResponseEntity.ok(usuarios);
+        List<User> users = userService.findAll();
+        return ResponseEntity.ok(users);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizarUsuario(@PathVariable Long id, @RequestBody User user) {
         try {
-            User usuarioAtualizado = userService.updateUser(id, user);
-            return ResponseEntity.ok(usuarioAtualizado);
-        } catch (EntidadeNaoEncontradaException e) {
+            User userAtualizado = userService.updateUser(id, user);
+            return ResponseEntity.ok(userAtualizado);
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.ok(e.getMessage());
         }
     }
@@ -67,7 +67,7 @@ public class UserController {
         try {
             userService.deleteUser(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuário apagado");
-        } catch (EntidadeNaoEncontradaException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

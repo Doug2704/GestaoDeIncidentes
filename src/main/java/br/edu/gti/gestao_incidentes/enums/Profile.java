@@ -1,14 +1,15 @@
 package br.edu.gti.gestao_incidentes.enums;
 
-public enum Role {
+public enum Profile {
 
     ADMIN("administrador do sistema"),
-    GERENTE("funcionário com maiores permissões"),
-    FUNCIONARIO("usuário comum");
+    MANAGER("funcionário com maiores permissões"),
+    EMPLOYEER("usuário comum"),
+    DEFAULT("usuário sem perfil atribuido");
 
     private final String description;
 
-    Role(String description) {
+    Profile(String description) {
         this.description = description.toUpperCase();
     }
 
