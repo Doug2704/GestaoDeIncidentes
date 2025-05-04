@@ -17,7 +17,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
@@ -40,18 +39,16 @@ public class UserService {
         return UserMapper.toDto(user);
     }
 
-    //TODO criar método para alterar senha
     public User update(Long id, UserRequestDTO userRequestDTO) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("nenhum usuário com id: " + id));
         try {
-            if (userRequestDTO.name() != null) user.setName(userRequestDTO.name());
-            if (userRequestDTO.username() != null) user.setUsername(userRequestDTO.username());
-            if (userRequestDTO.email() != null) user.setEmail(userRequestDTO.email());
-            if (userRequestDTO.actuationArea() != null) user.setActuationArea(userRequestDTO.actuationArea());
-            if (userRequestDTO.profile() != null) user.setProfile(userRequestDTO.profile()
-            );
+            UserMapper.applyChanges(userRequestDTO, user);
+            if (userRequestDTO.password() != null) {
+                user.setPassword(passwordEncoder.encode(userRequestDTO.password()));
+            }
             return userRepository.save(user);
+
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);
         }

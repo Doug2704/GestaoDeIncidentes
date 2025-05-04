@@ -2,9 +2,10 @@ package br.edu.gti.gestao_incidentes.dto.user;
 
 
 import br.edu.gti.gestao_incidentes.entities.User;
-import br.edu.gti.gestao_incidentes.enums.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class UserMapper {
+    private static PasswordEncoder passwordEncoder;
 
     public static UserResponseDTO toDto(User user) {
         if (user == null) return null;
@@ -32,4 +33,12 @@ public class UserMapper {
         return user;
     }
 
+    public static void applyChanges(UserRequestDTO userRequestDTO, User user) {
+        if (userRequestDTO.name() != null) user.setName(userRequestDTO.name());
+        if (userRequestDTO.username() != null) user.setUsername(userRequestDTO.username());
+        if (userRequestDTO.email() != null) user.setEmail(userRequestDTO.email());
+        if (userRequestDTO.actuationArea() != null) user.setActuationArea(userRequestDTO.actuationArea());
+        if (userRequestDTO.profile() != null) user.setProfile(userRequestDTO.profile());
+        if (userRequestDTO.password() != null) user.setPassword(passwordEncoder.encode(userRequestDTO.password()));
+    }
 }

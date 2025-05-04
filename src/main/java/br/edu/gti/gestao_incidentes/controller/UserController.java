@@ -4,11 +4,14 @@ import br.edu.gti.gestao_incidentes.dto.user.UserRequestDTO;
 import br.edu.gti.gestao_incidentes.dto.user.UserResponseDTO;
 import br.edu.gti.gestao_incidentes.entities.User;
 import br.edu.gti.gestao_incidentes.service.UserService;
+import br.edu.gti.gestao_incidentes.validation.OnCreate;
+import br.edu.gti.gestao_incidentes.validation.OnUpdate;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -22,7 +25,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/criar")
-    public ResponseEntity<?> createUser(@RequestBody UserRequestDTO userRequestDTO) {
+    public ResponseEntity<?> createUser(@RequestBody @Validated(OnCreate.class)UserRequestDTO userRequestDTO) {
         try {
             User savedUser = userService.create(userRequestDTO);
             URI local = URI.create("/" + savedUser.getId());
@@ -54,7 +57,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserRequestDTO user) {
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) UserRequestDTO user) {
         try {
             User updatedUser = userService.update(id, user);
             return ResponseEntity.ok(updatedUser);
