@@ -1,6 +1,5 @@
 package br.edu.gti.gestao_incidentes.entities;
 
-import br.edu.gti.gestao_incidentes.enums.Area;
 import br.edu.gti.gestao_incidentes.enums.Profile;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
@@ -34,7 +33,9 @@ public class User {
     @Column(nullable = false, name = "password")
     private String password;
 
-    @OneToOne
+    //TODO verificar relacionamentos ManyToOne nas demais entidades
+    //TODO implementar area default
+    @ManyToOne
     @JoinColumn(name = "actuation_area_id")
     private Area actuationArea;
 
@@ -43,12 +44,14 @@ public class User {
 
     @Column(nullable = false, name = "registration_date")
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
-    private LocalDateTime registrationDate = LocalDateTime.now();
+    private LocalDateTime registrationDate;
 
     @PrePersist
     public void prePersist() {
         if (profile == null) {
             profile = Profile.DEFAULT;
         }
+        registrationDate = LocalDateTime.now();
+
     }
 }

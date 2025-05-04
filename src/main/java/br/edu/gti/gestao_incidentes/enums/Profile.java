@@ -2,10 +2,10 @@ package br.edu.gti.gestao_incidentes.enums;
 
 public enum Profile {
 
+    DEFAULT("usuário sem perfil atribuido"),
     ADMIN("administrador do sistema"),
     MANAGER("funcionário com maiores permissões"),
-    EMPLOYEER("usuário comum"),
-    DEFAULT("usuário sem perfil atribuido");
+    EMPLOYEER("funcionário comum");
 
     private final String description;
 

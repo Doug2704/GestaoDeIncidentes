@@ -10,13 +10,11 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "executions")
+@Table(name = "execution")
 @Getter
 @Setter
 public class Execution {
     //TODO implementar logs
-    //TODO criar entidades Areas(id, nome), Ativos(id, nome, area) relacionar tabelas
-    // ver com Josué se ativo pode ser String
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,18 +29,23 @@ public class Execution {
     @JoinColumn(name = "validator_id")
     private User validator;
 
-    @Column(nullable = false, name = "openning_date")
+    //TODO verificar quais cascade types
+    @OneToOne(cascade = {CascadeType.PERSIST})
+    private ActionPlan actionPlan;
+
+    @Column(nullable = false, name = "opening_date")
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
-    private LocalDateTime openingDate = LocalDateTime.now();
+    private LocalDateTime openingDate;
 
     @Column(name = "finish_date")
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime finishDate;
 
+    //TODO implementar lógica para converter hora e minuto em minutos
     @Column(nullable = false, name = "plan_max_duration")
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
-    private Duration planMaxDuration;
+    private Long planMaxDuration; // Duração em minutos
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "execution_status")
     private Status status;
 
@@ -51,5 +54,6 @@ public class Execution {
         if (status == null) {
             status = Status.WAITING;
         }
+        this.openingDate = LocalDateTime.now();
     }
 }

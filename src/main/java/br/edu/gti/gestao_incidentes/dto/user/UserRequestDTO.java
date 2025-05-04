@@ -1,6 +1,6 @@
 package br.edu.gti.gestao_incidentes.dto.user;
 
-import br.edu.gti.gestao_incidentes.enums.Area;
+import br.edu.gti.gestao_incidentes.entities.Area;
 import br.edu.gti.gestao_incidentes.enums.Profile;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

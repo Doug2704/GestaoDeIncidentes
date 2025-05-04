@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,28 +18,39 @@ public class Step {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_step")
-    Long id;
+    private Long id;
 
-    @Column(name = "title")
+    @Column(nullable = false, name = "title")
     String title;
 
-    @Column(name = "action")
+    @Column(nullable = false, name = "action")
     String action;
 
     @Column(name = "position")
     int position;
 
-    @Column(nullable = false, name = "openning_date")
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "action_plan_id")
+    private ActionPlan actionPlan;
+
+    //TODO após setado, apenas o admin poderá alterar
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "responsible_area_id")
+    private Area responsibleArea;
+
+    @Column(nullable = false, name = "opening_date")
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
-    private LocalDateTime openingDate = LocalDateTime.now();
+    private LocalDateTime openingDate;
 
     @Column(name = "finish_date")
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime finishDate;
 
-    @Column(name = "step_max_duration")
-    LocalDateTime stepMaxDuration;
+    //TODO implementar lógica para converter hora e minuto em minutos
+    @Column(nullable = false, name = "plan_max_duration")
+    private Long planMaxDuration; // Duração em minutos
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "execution_status")
     private Status status;
 
@@ -47,5 +59,7 @@ public class Step {
         if (status == null) {
             status = Status.WAITING;
         }
+        this.openingDate = LocalDateTime.now();
     }
 }
+//TODO implementar na camada de serviço dependência da conclusão etapa anterior
