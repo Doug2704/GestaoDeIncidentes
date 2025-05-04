@@ -1,8 +1,10 @@
 package br.edu.gti.gestao_incidentes.controller;
 
+import br.edu.gti.gestao_incidentes.dto.user.UserRequestDTO;
+import br.edu.gti.gestao_incidentes.dto.user.UserResponseDTO;
 import br.edu.gti.gestao_incidentes.entities.User;
-import br.edu.gti.gestao_incidentes.exceptions.EntityNotFoundException;
 import br.edu.gti.gestao_incidentes.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -20,52 +22,51 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/criar")
-    public ResponseEntity<?> criarUsuario(@RequestBody User user) {
+    public ResponseEntity<?> createUser(@RequestBody UserRequestDTO userRequestDTO) {
         try {
-
+            User savedUser = userService.create(userRequestDTO);
             URI local = URI.create("/" + savedUser.getId());
             return ResponseEntity.created(local).body(savedUser);
 
-        }catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.ok(e.getMessage());
         }
 
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscarUsuarioPeloID(@PathVariable Long id) {
+    public ResponseEntity<?> findById(@PathVariable Long id) {
         try {
-            User usuarioEncontrado = userService.findById(id);
-            return ResponseEntity.ok(usuarioEncontrado);
+            UserResponseDTO foundUser = userService.findById(id);
+            return ResponseEntity.ok(foundUser);
 
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.ok(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> buscarUsuarios() {
-        List<User> users = userService.findAll();
+    public ResponseEntity<List<UserResponseDTO>> findAll() {
+        List<UserResponseDTO> users = userService.findAll();
         return ResponseEntity.ok(users);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizarUsuario(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserRequestDTO user) {
         try {
-            User userAtualizado = userService.updateUser(id, user);
-            return ResponseEntity.ok(userAtualizado);
+            User updatedUser = userService.update(id, user);
+            return ResponseEntity.ok(updatedUser);
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.ok(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> apagarUsuario(@PathVariable Long id) {
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         try {
-            userService.deleteUser(id);
+            userService.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuário apagado");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

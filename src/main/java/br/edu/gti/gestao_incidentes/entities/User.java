@@ -24,6 +24,10 @@ public class User {
     @Column(nullable = false, name = "name")
     private String name;
 
+    //used to login
+    @Column(nullable = false, name = "username", unique = true)
+    private String username;
+
     @Column(nullable = false, unique = true, name = "email")
     private String email;
 
@@ -34,12 +38,12 @@ public class User {
     @JoinColumn(name = "actuation_area_id")
     private Area actuationArea;
 
-    @Column(nullable = false, name = "registration_date")
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
-    private LocalDateTime dataRegistro = LocalDateTime.now();
-
     @Column(nullable = false, name = "profile")
     private Profile profile;
+
+    @Column(nullable = false, name = "registration_date")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
+    private LocalDateTime registrationDate = LocalDateTime.now();
 
     @PrePersist
     public void prePersist() {
