@@ -1,5 +1,6 @@
 package br.edu.gti.gestao_incidentes.entities;
 
+import br.edu.gti.gestao_incidentes.enums.Status;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -37,4 +38,14 @@ public class Step {
 
     @Column(name = "step_max_duration")
     LocalDateTime stepMaxDuration;
+
+    @Column(name = "execution_status")
+    private Status status;
+
+    @PrePersist
+    public void prePersist() {
+        if (status == null) {
+            status = Status.WAITING;
+        }
+    }
 }

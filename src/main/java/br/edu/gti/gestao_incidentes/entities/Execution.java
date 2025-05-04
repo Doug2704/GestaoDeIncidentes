@@ -1,5 +1,6 @@
 package br.edu.gti.gestao_incidentes.entities;
 
+import br.edu.gti.gestao_incidentes.enums.Status;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -41,4 +42,14 @@ public class Execution {
     @Column(nullable = false, name = "plan_max_duration")
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private Duration planMaxDuration;
+
+    @Column(name = "execution_status")
+    private Status status;
+
+    @PrePersist
+    public void prePersist() {
+        if (status == null) {
+            status = Status.WAITING;
+        }
+    }
 }

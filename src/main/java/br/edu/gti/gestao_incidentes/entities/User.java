@@ -41,6 +41,10 @@ public class User {
     @Column(nullable = false, name = "profile")
     private Profile profile;
 
-    //TODO implementar método para setar papel de usuário automáticamente
-
+    @PrePersist
+    public void prePersist() {
+        if (profile == null) {
+            profile = Profile.DEFAULT;
+        }
+    }
 }
