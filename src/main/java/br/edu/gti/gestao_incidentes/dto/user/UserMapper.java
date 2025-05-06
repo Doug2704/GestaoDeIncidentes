@@ -1,7 +1,7 @@
 package br.edu.gti.gestao_incidentes.dto.user;
 
 
-import br.edu.gti.gestao_incidentes.entities.User;
+import br.edu.gti.gestao_incidentes.entities.user.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class UserMapper {

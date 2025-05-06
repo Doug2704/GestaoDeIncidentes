@@ -3,14 +3,14 @@ package br.edu.gti.gestao_incidentes.service;
 import br.edu.gti.gestao_incidentes.dto.user.UserMapper;
 import br.edu.gti.gestao_incidentes.dto.user.UserRequestDTO;
 import br.edu.gti.gestao_incidentes.dto.user.UserResponseDTO;
-import br.edu.gti.gestao_incidentes.entities.User;
+import br.edu.gti.gestao_incidentes.entities.user.User;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

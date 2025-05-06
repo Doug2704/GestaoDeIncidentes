@@ -1,12 +1,12 @@
 package br.edu.gti.gestao_incidentes.entities;
 
+import br.edu.gti.gestao_incidentes.entities.user.User;
 import br.edu.gti.gestao_incidentes.enums.Status;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
@@ -30,7 +30,8 @@ public class Execution {
     private User validator;
 
     //TODO verificar quais cascade types
-    @OneToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @JoinColumn(nullable = false, name = "plan_id")
     private ActionPlan actionPlan;
 
     @Column(nullable = false, name = "opening_date")

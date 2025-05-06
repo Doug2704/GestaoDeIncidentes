@@ -1,6 +1,8 @@
 package br.edu.gti.gestao_incidentes.enums;
 
-public enum Profile {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Profile implements GrantedAuthority {
 
     DEFAULT("usuário sem perfil atribuido"),
     ADMIN("administrador do sistema"),
@@ -15,5 +17,10 @@ public enum Profile {
 
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public String getAuthority() {
+        return name();
     }
 }

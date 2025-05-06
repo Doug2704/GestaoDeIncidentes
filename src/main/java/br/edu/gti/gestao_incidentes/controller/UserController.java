@@ -2,7 +2,7 @@ package br.edu.gti.gestao_incidentes.controller;
 
 import br.edu.gti.gestao_incidentes.dto.user.UserRequestDTO;
 import br.edu.gti.gestao_incidentes.dto.user.UserResponseDTO;
-import br.edu.gti.gestao_incidentes.entities.User;
+import br.edu.gti.gestao_incidentes.entities.user.User;
 import br.edu.gti.gestao_incidentes.service.UserService;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import br.edu.gti.gestao_incidentes.validation.OnUpdate;
@@ -25,7 +25,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/criar")
-    public ResponseEntity<?> createUser(@RequestBody @Validated(OnCreate.class)UserRequestDTO userRequestDTO) {
+    public ResponseEntity<?> createUser(@RequestBody @Validated(OnCreate.class) UserRequestDTO userRequestDTO) {
         try {
             User savedUser = userService.create(userRequestDTO);
             URI local = URI.create("/" + savedUser.getId());

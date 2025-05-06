@@ -1,5 +1,6 @@
-package br.edu.gti.gestao_incidentes.entities;
+package br.edu.gti.gestao_incidentes.entities.user;
 
+import br.edu.gti.gestao_incidentes.entities.Area;
 import br.edu.gti.gestao_incidentes.enums.Profile;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
@@ -39,6 +40,7 @@ public class User {
     @JoinColumn(name = "actuation_area_id")
     private Area actuationArea;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "profile")
     private Profile profile;
 
