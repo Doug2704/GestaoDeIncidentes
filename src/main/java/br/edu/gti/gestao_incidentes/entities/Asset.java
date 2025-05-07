@@ -2,11 +2,15 @@ package br.edu.gti.gestao_incidentes.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "asset")
+@Getter
+@Setter
 public class Asset {
 
     @Id
@@ -22,7 +26,7 @@ public class Asset {
     private LocalDateTime creationDate;
 
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         this.creationDate = LocalDateTime.now();
     }
 }

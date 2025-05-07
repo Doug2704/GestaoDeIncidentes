@@ -71,6 +71,7 @@ public class SecurityConfig {
         return NimbusJwtDecoder.withPublicKey(key).build();
     }
 
+    //TODO hide variable before deploy
     @Bean
     JwtEncoder jwtEncoder() {
         var jwk = new RSAKey.Builder(key).privateKey(priv).build();
