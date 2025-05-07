@@ -22,7 +22,6 @@ public class AreaService {
     public Area create(@Validated(OnCreate.class) AreaRequestDTO areaRequestDTO) {
         try {
             Area area = AreaMapper.toEntity(areaRequestDTO);
-            area.setName(areaRequestDTO.name());
             return areaRepository.save(area);
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);

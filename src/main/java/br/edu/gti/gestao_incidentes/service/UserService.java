@@ -46,9 +46,6 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("nenhum usuário com id: " + id));
         try {
             UserMapper.applyChanges(userRequestDTO, user);
-            if (userRequestDTO.password() != null) {
-                user.setPassword(passwordEncoder.encode(userRequestDTO.password()));
-            }
             return userRepository.save(user);
 
         } catch (DataIntegrityViolationException e) {

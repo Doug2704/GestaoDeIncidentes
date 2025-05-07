@@ -16,14 +16,13 @@ public class UniqueFieldViolationException extends RuntimeException {
         this.messages = extractMessages(ex);
     }
 
-    //TODO alterar ou remover
+    //TODO alterar ou remover (está sendo salvo em ingles no banco
     private List<String> extractMessages(DataIntegrityViolationException ex) {
         List<String> erros = new ArrayList<>();
         String cause = ex.getRootCause() != null ? ex.getRootCause().getMessage() : "";
 
         String[] fields = {
-                "cnpj", "nome_de_usuario", "email",
-                "razao_social", "cpf"};
+                "nome", "nome_de_usuario", "email", "titulo"};
         for (String field : fields) {
             if (cause.contains(field)) {
                 erros.add(field + " já está em uso.");

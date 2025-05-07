@@ -30,7 +30,7 @@ public class Execution {
     private User validator;
 
     //TODO verificar quais cascade types
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne
     @JoinColumn(nullable = false, name = "plan_id")
     private ActionPlan actionPlan;
 

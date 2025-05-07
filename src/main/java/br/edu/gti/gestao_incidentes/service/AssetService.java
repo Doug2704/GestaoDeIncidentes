@@ -22,7 +22,6 @@ public class AssetService {
     public Asset create(@Validated(OnCreate.class) AssetRequestDTO assetRequestDTO) {
         try {
             Asset asset = AssetMapper.toEntity(assetRequestDTO);
-            asset.setName(assetRequestDTO.name());
             return assetRepository.save(asset);
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);

@@ -34,7 +34,6 @@ public class User {
     @Column(nullable = false, name = "password")
     private String password;
 
-    //TODO verificar relacionamentos ManyToOne nas demais entidades
     //TODO implementar area default
     @ManyToOne
     @JoinColumn(name = "actuation_area_id")
