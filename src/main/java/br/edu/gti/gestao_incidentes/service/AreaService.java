@@ -1,0 +1,55 @@
+package br.edu.gti.gestao_incidentes.service;
+
+import br.edu.gti.gestao_incidentes.dto.mappers.AreaMapper;
+import br.edu.gti.gestao_incidentes.dto.requests.AreaRequestDTO;
+import br.edu.gti.gestao_incidentes.entities.Area;
+import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
+import br.edu.gti.gestao_incidentes.repository.AreaRepository;
+import br.edu.gti.gestao_incidentes.validation.OnCreate;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class AreaService {
+    private final AreaRepository areaRepository;
+
+    public Area create(@Validated(OnCreate.class) AreaRequestDTO areaRequestDTO) {
+        try {
+            Area area = AreaMapper.toEntity(areaRequestDTO);
+            area.setName(areaRequestDTO.name());
+            return areaRepository.save(area);
+        } catch (DataIntegrityViolationException e) {
+            throw new UniqueFieldViolationException(e);
+        }
+    }
+
+    public List<Area> findAll() {
+        return areaRepository.findAll();
+    }
+
+    public Area findById(Long id) {
+        return areaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma área com o id: " + id));
+    }
+
+    public Area update(Long id, AreaRequestDTO areaRequestDTO) {
+        Area area = areaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma área com o id: " + id));
+        try {
+            AreaMapper.applyChanges(areaRequestDTO, area);
+            return areaRepository.save(area);
+        } catch (DataIntegrityViolationException e) {
+            throw new UniqueFieldViolationException(e);
+        }
+    }
+
+    public void delete(Long id) {
+        Area area = areaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma área com o id: " + id));
+        areaRepository.delete(area);
+    }
+}
+

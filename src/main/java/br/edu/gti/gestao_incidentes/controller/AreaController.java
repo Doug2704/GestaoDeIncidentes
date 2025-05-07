@@ -1,14 +1,12 @@
 package br.edu.gti.gestao_incidentes.controller;
 
-import br.edu.gti.gestao_incidentes.dto.requests.UserRequestDTO;
-import br.edu.gti.gestao_incidentes.dto.responses.UserResponseDTO;
-import br.edu.gti.gestao_incidentes.entities.user.User;
-import br.edu.gti.gestao_incidentes.service.UserService;
+import br.edu.gti.gestao_incidentes.dto.requests.AreaRequestDTO;
+import br.edu.gti.gestao_incidentes.entities.Area;
+import br.edu.gti.gestao_incidentes.service.AreaService;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import br.edu.gti.gestao_incidentes.validation.OnUpdate;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,18 +17,17 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/users")
+@RequestMapping("api/v1/admin/areas")
 @RequiredArgsConstructor
-public class UserController {
-
-    private final UserService userService;
+public class AreaController {
+    private AreaService areaService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createUser(@RequestBody @Validated(OnCreate.class) UserRequestDTO userRequestDTO) {
+    public ResponseEntity<?> createArea(@RequestBody @Validated(OnCreate.class) AreaRequestDTO AreaRequestDTO) {
         try {
-            User savedUser = userService.create(userRequestDTO);
-            URI local = URI.create("/" + savedUser.getId());
-            return ResponseEntity.created(local).body(savedUser);
+            Area savedArea = areaService.create(AreaRequestDTO);
+            URI local = URI.create("/" + savedArea.getId());
+            return ResponseEntity.created(local).body(savedArea);
 
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
@@ -43,34 +40,34 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         try {
-            UserResponseDTO foundUser = userService.findById(id);
-            return ResponseEntity.ok(foundUser);
+            Area foundArea = areaService.findById(id);
+            return ResponseEntity.ok(foundArea);
 
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<UserResponseDTO>> findAll() {
-        List<UserResponseDTO> users = userService.findAll();
-        return ResponseEntity.ok(users);
+    @GetMapping
+    public ResponseEntity<List<Area>> findAll() {
+        List<Area> areas = areaService.findAll();
+        return ResponseEntity.ok(areas);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) UserRequestDTO user) {
+    public ResponseEntity<?> updateArea(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) AreaRequestDTO area) {
         try {
-            User updatedUser = userService.update(id, user);
-            return ResponseEntity.ok(updatedUser);
+            Area updatedarea = areaService.update(id, area);
+            return ResponseEntity.ok(updatedarea);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<?> deleteArea(@PathVariable Long id) {
         try {
-            userService.delete(id);
+            areaService.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuário apagado");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

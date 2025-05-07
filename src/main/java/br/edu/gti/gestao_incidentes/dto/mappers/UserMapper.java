@@ -1,6 +1,8 @@
-package br.edu.gti.gestao_incidentes.dto.user;
+package br.edu.gti.gestao_incidentes.dto.mappers;
 
 
+import br.edu.gti.gestao_incidentes.dto.requests.UserRequestDTO;
+import br.edu.gti.gestao_incidentes.dto.responses.UserResponseDTO;
 import br.edu.gti.gestao_incidentes.entities.user.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

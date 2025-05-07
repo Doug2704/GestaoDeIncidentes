@@ -1,16 +1,18 @@
 package br.edu.gti.gestao_incidentes.service;
 
-import br.edu.gti.gestao_incidentes.dto.user.UserMapper;
-import br.edu.gti.gestao_incidentes.dto.user.UserRequestDTO;
-import br.edu.gti.gestao_incidentes.dto.user.UserResponseDTO;
+import br.edu.gti.gestao_incidentes.dto.mappers.UserMapper;
+import br.edu.gti.gestao_incidentes.dto.requests.UserRequestDTO;
+import br.edu.gti.gestao_incidentes.dto.responses.UserResponseDTO;
 import br.edu.gti.gestao_incidentes.entities.user.User;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.UserRepository;
+import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    public User create(UserRequestDTO userRequestDTO) {
+    public User create(@Validated(OnCreate.class) UserRequestDTO userRequestDTO) {
         try {
             User user = UserMapper.toEntity(userRequestDTO);
             user.setPassword(passwordEncoder.encode(userRequestDTO.password()));

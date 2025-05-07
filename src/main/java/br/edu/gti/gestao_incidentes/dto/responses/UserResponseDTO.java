@@ -1,4 +1,4 @@
-package br.edu.gti.gestao_incidentes.dto.user;
+package br.edu.gti.gestao_incidentes.dto.responses;
 
 import br.edu.gti.gestao_incidentes.entities.Area;
 import br.edu.gti.gestao_incidentes.enums.Profile;

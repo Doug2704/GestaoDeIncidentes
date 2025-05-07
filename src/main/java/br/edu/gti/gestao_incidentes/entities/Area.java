@@ -18,12 +18,12 @@ public class Area {
     @Column(name = "id_area")
     private Long id;
 
-    @Column(nullable = false, name = "name")
+    @Column(nullable = false, unique = true, name = "name")
     private String name;
 
     @Column(nullable = false, name = "creation_date")
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
-    private LocalDateTime creationDate ;
+    private LocalDateTime creationDate;
 
     @PrePersist
     public void prePersist() {
