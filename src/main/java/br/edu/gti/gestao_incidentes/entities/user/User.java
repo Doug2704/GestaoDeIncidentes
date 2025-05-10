@@ -34,7 +34,6 @@ public class User {
     @Column(nullable = false, name = "password")
     private String password;
 
-    //TODO implementar area default
     @ManyToOne
     @JoinColumn(name = "actuation_area_id")
     private Area actuationArea;

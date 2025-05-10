@@ -50,5 +50,7 @@ public class ActionPlanService {
         ActionPlan plan = planRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhum plano de ação com com o id: " + id));
         planRepository.delete(plan);
     }
+
+    //other methods that are not CRUD
 }
 

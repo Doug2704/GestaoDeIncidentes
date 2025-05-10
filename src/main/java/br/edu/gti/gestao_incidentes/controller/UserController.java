@@ -71,7 +71,7 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         try {
             userService.delete(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuário apagado");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuário excluído");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

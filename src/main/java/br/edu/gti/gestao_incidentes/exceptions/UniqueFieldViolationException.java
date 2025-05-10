@@ -11,23 +11,19 @@ public class UniqueFieldViolationException extends RuntimeException {
 
     private final List<String> messages;
 
+    //TODO escanear pontos de possíveis exceções de integridade de dados
     public UniqueFieldViolationException(DataIntegrityViolationException ex) {
-        super(ex);
-        this.messages = extractMessages(ex);
-    }
-
-    //TODO alterar ou remover (está sendo salvo em ingles no banco
-    private List<String> extractMessages(DataIntegrityViolationException ex) {
-        List<String> erros = new ArrayList<>();
-        String cause = ex.getRootCause() != null ? ex.getRootCause().getMessage() : "";
-
-        String[] fields = {
-                "nome", "nome_de_usuario", "email", "titulo"};
-        for (String field : fields) {
-            if (cause.contains(field)) {
-                erros.add(field + " já está em uso.");
-            }
+        super(ex.getMessage());
+        this.messages = new ArrayList<>();
+        // Adicionar a mensagem personalizada de acordo com o campo violado
+        if (ex.getMessage().contains("username")) {
+            messages.add("Nome de usuário já em uso");
+        } else if (ex.getMessage().contains("email")) {
+            messages.add("Email já em uso");
+        } else {
+            messages.add("Erro de integridade de dados");
         }
-        return erros;
     }
 }
+
+

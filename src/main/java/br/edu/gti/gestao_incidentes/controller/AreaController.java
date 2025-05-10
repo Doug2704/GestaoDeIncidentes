@@ -68,7 +68,7 @@ public class AreaController {
     public ResponseEntity<?> deleteArea(@PathVariable Long id) {
         try {
             areaService.delete(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuário apagado");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Área excluída");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

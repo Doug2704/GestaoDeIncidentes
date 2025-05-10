@@ -22,6 +22,7 @@ import java.util.List;
 public class ActionPlanController {
     private ActionPlanService planService;
 
+    //TODO implementar quem pode criar
     @PostMapping("/create")
     public ResponseEntity<?> createPlan(@RequestBody @Validated(OnCreate.class) PlanRequestDTO planRequestDTO) {
         try {
@@ -68,7 +69,7 @@ public class ActionPlanController {
     public ResponseEntity<?> deletePlan(@PathVariable Long id) {
         try {
             planService.delete(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuário apagado");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Plano de ação excluído");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

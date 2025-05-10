@@ -29,7 +29,6 @@ public class Execution {
     @JoinColumn(name = "validator_id")
     private User validator;
 
-    //TODO verificar quais cascade types
     @ManyToOne
     @JoinColumn(nullable = false, name = "plan_id")
     private ActionPlan actionPlan;
@@ -53,8 +52,9 @@ public class Execution {
     @PrePersist
     public void prePersist() {
         if (status == null) {
-            status = Status.WAITING;
+            status = Status.EXECUTING;
         }
         this.openingDate = LocalDateTime.now();
     }
 }
+//TODO implementar lógica para alterar status de ações e plano

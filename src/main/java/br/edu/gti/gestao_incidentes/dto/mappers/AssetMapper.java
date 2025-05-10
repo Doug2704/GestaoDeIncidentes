@@ -3,6 +3,7 @@ package br.edu.gti.gestao_incidentes.dto.mappers;
 import br.edu.gti.gestao_incidentes.dto.requests.AssetRequestDTO;
 import br.edu.gti.gestao_incidentes.entities.Asset;
 
+//TODO resolver relação com área e observar demais relações
 public class AssetMapper {
 
     public static Asset toEntity(AssetRequestDTO assetRequestDTO) {

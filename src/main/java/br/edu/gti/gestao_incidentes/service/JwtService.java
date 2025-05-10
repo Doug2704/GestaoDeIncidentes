@@ -41,15 +41,6 @@ public class JwtService {
         return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
-    //TODO: verify with Product Owner if this method is needed
-    public Jwt verifyToken(String token) {
-        try {
-            return jwtDecoder.decode(token);
-        } catch (JwtException e) {
-            throw new RuntimeException("Token inválido ou expirado", e);
-        }
-    }
-
     public static Long getUserIdFromToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserAuthenticated) {

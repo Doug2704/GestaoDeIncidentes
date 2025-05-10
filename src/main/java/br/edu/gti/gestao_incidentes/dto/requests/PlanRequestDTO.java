@@ -11,7 +11,6 @@ import java.util.List;
 public record PlanRequestDTO(
 
         @NotBlank(message = "Título é obrigatório", groups = OnCreate.class)
-        @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s]+$", message = "Utilize apenas letras no título")
         @Size(min = 5, message = "Título precisa ter, pelo menos, {min} caracteres.")
         String title,
 

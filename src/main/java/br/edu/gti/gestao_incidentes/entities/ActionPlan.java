@@ -24,6 +24,8 @@ public class ActionPlan {
     @Column(nullable = false, name = "title")
     private String title;
 
+    //TODO verificar relações em demais entidades
+    //TODO verificar cascadeTypes
     @OneToMany(mappedBy = "actionPlan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Step> steps;
 
@@ -32,7 +34,7 @@ public class ActionPlan {
     @JoinColumn(nullable = false, name = "responsible_area_id")
     private Area responsibleArea;
 
-    //TODO apenas funcionario que criou e admin poderão alterar
+    //TODO apenas funcionário que criou e admin poderão alterar
     @ManyToMany
     @JoinTable(
             name = "plan_affected_areas",
@@ -56,9 +58,8 @@ public class ActionPlan {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime creationDate;
 
-
     @PrePersist
-    public void prePersist(){
-        this.creationDate=LocalDateTime.now();
+    public void prePersist() {
+        this.creationDate = LocalDateTime.now();
     }
 }

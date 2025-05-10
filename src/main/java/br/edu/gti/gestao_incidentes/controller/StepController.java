@@ -1,8 +1,8 @@
 package br.edu.gti.gestao_incidentes.controller;
 
-import br.edu.gti.gestao_incidentes.dto.requests.AssetRequestDTO;
-import br.edu.gti.gestao_incidentes.entities.Asset;
-import br.edu.gti.gestao_incidentes.service.AssetService;
+import br.edu.gti.gestao_incidentes.dto.requests.StepRequestDTO;
+import br.edu.gti.gestao_incidentes.entities.Step;
+import br.edu.gti.gestao_incidentes.service.StepService;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import br.edu.gti.gestao_incidentes.validation.OnUpdate;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,17 +17,18 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/admin/assets")
+@RequestMapping("api/v1/steps")
 @RequiredArgsConstructor
-public class AssetController {
-    private AssetService assetService;
+public class StepController {
+    private StepService stepService;
 
+    //TODO implementar quem pode criar
     @PostMapping("/create")
-    public ResponseEntity<?> createAsset(@RequestBody @Validated(OnCreate.class) AssetRequestDTO assetRequestDTO) {
+    public ResponseEntity<?> createstep(@RequestBody @Validated(OnCreate.class) StepRequestDTO stepRequestDTO) {
         try {
-            Asset savedasset = assetService.create(assetRequestDTO);
-            URI local = URI.create("/" + savedasset.getId());
-            return ResponseEntity.created(local).body(savedasset);
+            Step savedStep = stepService.create(stepRequestDTO);
+            URI local = URI.create("/" + savedStep.getId());
+            return ResponseEntity.created(local).body(savedStep);
 
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
@@ -40,8 +41,8 @@ public class AssetController {
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         try {
-            Asset foundasset = assetService.findById(id);
-            return ResponseEntity.ok(foundasset);
+            Step foundStep = stepService.findById(id);
+            return ResponseEntity.ok(foundStep);
 
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -49,26 +50,26 @@ public class AssetController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Asset>> findAll() {
-        List<Asset> assets = assetService.findAll();
-        return ResponseEntity.ok(assets);
+    public ResponseEntity<List<Step>> findAll() {
+        List<Step> steps = stepService.findAll();
+        return ResponseEntity.ok(steps);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateAsset(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) AssetRequestDTO asset) {
+    public ResponseEntity<?> updatestep(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) StepRequestDTO stepRequestDTO) {
         try {
-            Asset updatedasset = assetService.update(id, asset);
-            return ResponseEntity.ok(updatedasset);
+            Step actionStep = stepService.update(id, stepRequestDTO);
+            return ResponseEntity.ok(actionStep);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAsset(@PathVariable Long id) {
+    public ResponseEntity<?> deletestep(@PathVariable Long id) {
         try {
-            assetService.delete(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Ativo excluído");
+            stepService.delete(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Etapa excluída");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

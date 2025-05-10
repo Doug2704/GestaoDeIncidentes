@@ -21,6 +21,10 @@ public class Asset {
     @Column(nullable = false, name = "name")
     private String name;
 
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "area_id")
+    private Area area;
+
     @Column(nullable = false, name = "creation_date")
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime creationDate;
