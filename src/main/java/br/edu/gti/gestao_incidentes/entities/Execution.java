@@ -41,10 +41,6 @@ public class Execution {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime finishDate;
 
-    //TODO implementar lógica para converter hora e minuto em minutos
-    @Column(nullable = false, name = "plan_max_duration")
-    private Long planMaxDuration; // Duração em minutos
-
     @Enumerated(EnumType.STRING)
     @Column(name = "execution_status")
     private Status status;
