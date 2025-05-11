@@ -34,6 +34,9 @@ public record PlanRequestDTO(
         Level urgencyLevel,
 
         @NotNull(message = "Defina o nível de impacto do incidente", groups = OnCreate.class)
-        Level impactLevel
-) {
+        Level impactLevel,
+
+        @NotNull(message = "Defina uma duração máxima sugerida para a execução desse plano de ação.", groups = OnCreate.class)
+        Long planMaxDuration
+        ) {
 }

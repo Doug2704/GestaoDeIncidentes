@@ -17,6 +17,7 @@ public class PlanMapper {
         actionPlan.setIncidentDescription(planRequestDTO.incidentDescription());
         actionPlan.setUrgencyLevel(planRequestDTO.urgencyLevel());
         actionPlan.setImpactLevel(planRequestDTO.impactLevel());
+        actionPlan.setPlanMaxDuration(planRequestDTO.planMaxDuration());
 
         return actionPlan;
     }
@@ -26,8 +27,10 @@ public class PlanMapper {
         if (planRequestDTO.steps() != null) actionPlan.setSteps(planRequestDTO.steps());
         if (planRequestDTO.responsibleArea() != null) actionPlan.setResponsibleArea(planRequestDTO.responsibleArea());
         if (planRequestDTO.affectedAreas() != null) actionPlan.setAffectedAreas(planRequestDTO.affectedAreas());
-        if (planRequestDTO.incidentDescription() != null) actionPlan.setIncidentDescription(planRequestDTO.incidentDescription());
+        if (planRequestDTO.incidentDescription() != null)
+            actionPlan.setIncidentDescription(planRequestDTO.incidentDescription());
         if (planRequestDTO.urgencyLevel() != null) actionPlan.setUrgencyLevel(planRequestDTO.urgencyLevel());
         if (planRequestDTO.impactLevel() != null) actionPlan.setImpactLevel(planRequestDTO.impactLevel());
+        if (planRequestDTO.planMaxDuration() != null) actionPlan.setPlanMaxDuration(planRequestDTO.planMaxDuration());
     }
 }

@@ -24,8 +24,6 @@ public class ActionPlan {
     @Column(nullable = false, name = "title")
     private String title;
 
-    //TODO verificar relações em demais entidades
-    //TODO verificar cascadeTypes
     @OneToMany(mappedBy = "actionPlan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Step> steps;
 
@@ -53,6 +51,10 @@ public class ActionPlan {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "impact_level")
     private Level impactLevel;
+
+    //TODO implementar lógica para converter hora e minuto em minutos
+    @Column(nullable = false, name = "plan_max_duration")
+    private Long planMaxDuration; // Duração em minutos
 
     @Column(nullable = false, name = "creation_date")
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
