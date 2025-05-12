@@ -1,8 +1,5 @@
 package br.edu.gti.gestao_incidentes.enums;
 
-import lombok.RequiredArgsConstructor;
-
-//TODO log pra todo lado
 public enum Status {
     NOT_STARTED("não iniciado"),
     WAITING("aguardando"),

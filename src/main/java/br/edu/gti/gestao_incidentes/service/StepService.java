@@ -3,6 +3,7 @@ package br.edu.gti.gestao_incidentes.service;
 import br.edu.gti.gestao_incidentes.dto.mappers.StepMapper;
 import br.edu.gti.gestao_incidentes.dto.requests.StepRequestDTO;
 import br.edu.gti.gestao_incidentes.entities.Step;
+import br.edu.gti.gestao_incidentes.enums.Status;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.StepRepository;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;

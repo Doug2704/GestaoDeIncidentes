@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class Execution {
-    //TODO implementar logs
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,4 +52,3 @@ public class Execution {
         this.openingDate = LocalDateTime.now();
     }
 }
-//TODO implementar lógica para alterar status de ações e plano

@@ -2,6 +2,7 @@ package br.edu.gti.gestao_incidentes.service;
 
 import br.edu.gti.gestao_incidentes.entities.ActionPlan;
 import br.edu.gti.gestao_incidentes.entities.Execution;
+import br.edu.gti.gestao_incidentes.entities.Step;
 import br.edu.gti.gestao_incidentes.entities.user.User;
 import br.edu.gti.gestao_incidentes.enums.Status;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
@@ -23,8 +24,10 @@ public class ExecutionService {
 
     public Execution start(ActionPlan actionPlan, Long requesterId) {
         Execution execution = new Execution();
+        startSteps(actionPlan);
         try {
             User requester = userRepository.findById(requesterId).get();
+
             execution.setRequester(requester);
             execution.setActionPlan(actionPlan);
 
@@ -45,6 +48,8 @@ public class ExecutionService {
     public Execution finish(Long executionId, Long requesterId) {
         Execution execution = executionRepository.findById(executionId).orElseThrow(() -> new EntityNotFoundException("nenhuma execução com o id: " + executionId));
         try {
+            validateAllStepsFinished(execution.getActionPlan());
+
             User validator = userRepository.findById(requesterId).get();
             execution.setValidator(validator);
             execution.setStatus(Status.FINISHED);
@@ -61,5 +66,17 @@ public class ExecutionService {
         executionRepository.delete(execution);
     }
 
+    private void startSteps(ActionPlan actionPlan) {
+        List<Step> steps = actionPlan.getSteps();
+        steps.forEach(step -> step.setStatus(Status.WAITING));
+    }
+
+    private void validateAllStepsFinished(ActionPlan actionPlan) {
+        List<Step> steps = actionPlan.getSteps();
+        for (Step step : steps) {
+            if (step.getStatus() != Status.FINISHED)
+                throw new RuntimeException("Conclua todas as etapas antes de finalizar o plano de ação");
+        }
+    }
 }
 

@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 @Getter
 @Setter
-//TODO implementar lógica de autenticação de usuário
 public class User {
 
     @Id
