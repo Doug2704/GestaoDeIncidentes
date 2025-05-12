@@ -5,9 +5,9 @@ import br.edu.gti.gestao_incidentes.enums.Status;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
+//TODO verificar lógica para status
 public record StepRequestDTO(
         @NotBlank(message = "Título é obrigatório.", groups = OnCreate.class)
         String title,

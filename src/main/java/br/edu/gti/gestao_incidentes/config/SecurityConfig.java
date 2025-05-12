@@ -26,7 +26,6 @@ import java.security.interfaces.RSAPublicKey;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    //TODO: hide the keys with environments variables
     @Value("${jwt.public.key}")
     private RSAPublicKey key;
     @Value("${jwt.private.key}")

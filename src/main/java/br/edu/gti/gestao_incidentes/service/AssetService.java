@@ -33,11 +33,11 @@ public class AssetService {
     }
 
     public Asset findById(Long id) {
-        return assetRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma área com o id: " + id));
+        return assetRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhum ativo com o id: " + id));
     }
 
     public Asset update(Long id, AssetRequestDTO assetRequestDTO) {
-        Asset asset = assetRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma área com o id: " + id));
+        Asset asset = assetRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhum ativo com o id: " + id));
         try {
             AssetMapper.applyChanges(assetRequestDTO, asset);
             return assetRepository.save(asset);
@@ -47,7 +47,7 @@ public class AssetService {
     }
 
     public void delete(Long id) {
-        Asset asset = assetRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma área com o id: " + id));
+        Asset asset = assetRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhum ativo com o id: " + id));
         assetRepository.delete(asset);
     }
 }
