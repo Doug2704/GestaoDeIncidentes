@@ -22,9 +22,8 @@ import java.util.List;
 public class StepController {
     private StepService stepService;
 
-    //TODO implementar quem pode criar
     @PostMapping("/create")
-    public ResponseEntity<?> createstep(@RequestBody @Validated(OnCreate.class) StepRequestDTO stepRequestDTO) {
+    public ResponseEntity<?> createStep(@RequestBody @Validated(OnCreate.class) StepRequestDTO stepRequestDTO) {
         try {
             Step savedStep = stepService.create(stepRequestDTO);
             URI local = URI.create("/" + savedStep.getId());
@@ -38,7 +37,7 @@ public class StepController {
 
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/find/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         try {
             Step foundStep = stepService.findById(id);
@@ -49,14 +48,14 @@ public class StepController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Step>> findAll() {
         List<Step> steps = stepService.findAll();
         return ResponseEntity.ok(steps);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updatestep(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) StepRequestDTO stepRequestDTO) {
+    @PutMapping("update/{id}")
+    public ResponseEntity<?> updateStep(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) StepRequestDTO stepRequestDTO) {
         try {
             Step actionStep = stepService.update(id, stepRequestDTO);
             return ResponseEntity.ok(actionStep);
@@ -65,8 +64,8 @@ public class StepController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletestep(@PathVariable Long id) {
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<?> deleteStep(@PathVariable Long id) {
         try {
             stepService.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Etapa excluída");

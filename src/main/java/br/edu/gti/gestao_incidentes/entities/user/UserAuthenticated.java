@@ -12,7 +12,6 @@ import java.util.List;
 public class UserAuthenticated implements UserDetails {
     private final User user;
 
-    //TODO verificar string se é com ROLE ou com PROFILE
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("PROFILE_" + user.getProfile()));

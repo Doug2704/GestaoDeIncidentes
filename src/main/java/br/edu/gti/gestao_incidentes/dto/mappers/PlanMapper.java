@@ -22,6 +22,7 @@ public class PlanMapper {
         return actionPlan;
     }
 
+    //TODO testar todas as requisições
     public static void applyChanges(PlanRequestDTO planRequestDTO, ActionPlan actionPlan) {
         if (planRequestDTO.title() != null) actionPlan.setTitle(planRequestDTO.title());
         if (planRequestDTO.steps() != null) actionPlan.setSteps(planRequestDTO.steps());

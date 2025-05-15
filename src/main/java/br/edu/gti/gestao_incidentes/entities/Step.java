@@ -9,6 +9,8 @@ import lombok.Setter;
 @Table(name = "step")
 @Getter
 @Setter
+
+//TODO implementar tasks
 public class Step {
 
     @Id
@@ -19,13 +21,13 @@ public class Step {
     @Column(nullable = false, name = "title")
     String title;
 
+    @ManyToOne
+    @JoinColumn(name = "action_plan_id")
+    private ActionPlan actionPlan;
+
+    //TODO mudar para entidade task
     @Column(nullable = false, name = "action")
     String action;
-
-    //TODO implementar no ActionPlanService alteração da posição
-    @Column(name = "position")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int position;
 
     //TODO após setado, apenas o admin poderá alterar
     @ManyToOne
@@ -36,6 +38,7 @@ public class Step {
     @Column(name = "step_status")
     private Status status;
 
+    //TODO max step duration
     @PrePersist
     public void prePersist() {
         if (status == null) {
@@ -43,4 +46,3 @@ public class Step {
         }
     }
 }
-//TODO implementar no ExecutionService dependência da conclusão etapa anterior

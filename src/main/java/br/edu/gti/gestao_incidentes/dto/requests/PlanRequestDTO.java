@@ -27,9 +27,6 @@ public record PlanRequestDTO(
         @Size(min = 10, message = "Descrição do incidente precisa ter, pelo menos, {min} caracteres.")
         String incidentDescription,
 
-        @NotNull(message = "Defina um usuário", groups = OnCreate.class)
-        UserRequestDTO userRequestDTO,
-
         @NotNull(message = "Defina o nível de urgência do incidente", groups = OnCreate.class)
         Level urgencyLevel,
 

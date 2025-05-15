@@ -41,21 +41,29 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         //public routes
-                        .requestMatchers("/api/v1/auth/login",
-                                "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-
-                        //register routes
                         .requestMatchers(
-                                "/api/v1/student", "/api/v1/company", "/api/v1/admin").permitAll()
+                                "/api/v1/auth/login", "/v3/api-docs/**"
+                                , "/swagger-ui/**", "/swagger-ui.html",
+                                "/api/v1/plans/all", "/api/v1/plans/find").permitAll()
 
                         //only admin
-                        .requestMatchers("/api/v1/admin/**",
-                                "/api/v1/student/all", "/api/v1/company/all").hasAuthority("SCOPE_ADMIN")
+                        .requestMatchers(
+                                "/api/v1/admin/**", "/api/v1/assets/**",
+                                "/api/v1/areas/**", "/api/v1/users/**",
+                                "/api/v1/plans/all", "/api/v1/plans/find",
+                                "/api/v1/plans/delete").hasAuthority("SCOPE_ADMIN")
 
-                        //students
-                        .requestMatchers("/api/v1/student/**").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_ESTUDANTE")
-                        //companies
-                        .requestMatchers("/api/v1/company/**").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_EMPRESA")
+                        //only manager
+                        .requestMatchers("/api/v1/steps/**",
+                                "/api/v1/plans/create", "/api/v1/plans/find",
+                                "/api/v1/plans/all", "/api/v1/plans/update"
+                        ).hasAuthority("SCOPE_MANAGER")
+
+                        //only operator
+                        .requestMatchers(
+                                "/api/v1/plans/find", "/api/v1/plans/all",
+                                "/api/v1/exec/**"
+                        ).hasAuthority("SCOPE_MANAGER")
 
                         //any other routes that need authentication
                         .anyRequest().authenticated()

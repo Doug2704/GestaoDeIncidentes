@@ -13,7 +13,6 @@ import java.util.List;
 @Table(name = "action_plan")
 @Getter
 @Setter
-//TODO apenas membros da área podem alterar
 public class ActionPlan {
 
     @Id
@@ -27,12 +26,10 @@ public class ActionPlan {
     @OneToMany(mappedBy = "actionPlan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Step> steps;
 
-    //TODO após setado, apenas o admin poderá alterar
     @ManyToOne
     @JoinColumn(nullable = false, name = "responsible_area_id")
     private Area responsibleArea;
 
-    //TODO apenas funcionário que criou e admin poderão alterar
     @ManyToMany
     @JoinTable(
             name = "plan_affected_areas",
@@ -52,7 +49,6 @@ public class ActionPlan {
     @Column(nullable = false, name = "impact_level")
     private Level impactLevel;
 
-    //TODO implementar lógica para converter hora e minuto em minutos
     @Column(nullable = false, name = "plan_max_duration")
     private Long planMaxDuration; // Duração em minutos
 

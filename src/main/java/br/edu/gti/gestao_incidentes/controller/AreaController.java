@@ -37,7 +37,7 @@ public class AreaController {
 
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/find/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         try {
             Area foundArea = areaService.findById(id);
@@ -48,13 +48,13 @@ public class AreaController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Area>> findAll() {
         List<Area> areas = areaService.findAll();
         return ResponseEntity.ok(areas);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<?> updateArea(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) AreaRequestDTO area) {
         try {
             Area updatedarea = areaService.update(id, area);
@@ -64,7 +64,7 @@ public class AreaController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteArea(@PathVariable Long id) {
         try {
             areaService.delete(id);

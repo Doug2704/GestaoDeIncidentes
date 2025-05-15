@@ -2,7 +2,9 @@ package br.edu.gti.gestao_incidentes.controller;
 
 import br.edu.gti.gestao_incidentes.dto.requests.PlanRequestDTO;
 import br.edu.gti.gestao_incidentes.entities.ActionPlan;
+import br.edu.gti.gestao_incidentes.enums.Profile;
 import br.edu.gti.gestao_incidentes.service.ActionPlanService;
+import br.edu.gti.gestao_incidentes.service.JwtService;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import br.edu.gti.gestao_incidentes.validation.OnUpdate;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,9 +22,8 @@ import java.util.List;
 @RequestMapping("api/v1/plans")
 @RequiredArgsConstructor
 public class ActionPlanController {
-    private ActionPlanService planService;
+    private final ActionPlanService planService;
 
-    //TODO implementar quem pode criar
     @PostMapping("/create")
     public ResponseEntity<?> createPlan(@RequestBody @Validated(OnCreate.class) PlanRequestDTO planRequestDTO) {
         try {
@@ -35,10 +36,9 @@ public class ActionPlanController {
         } catch (RuntimeException e) {
             return ResponseEntity.ok(e.getMessage());
         }
-
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/find/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         try {
             ActionPlan foundPlan = planService.findById(id);
@@ -49,13 +49,13 @@ public class ActionPlanController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<ActionPlan>> findAll() {
         List<ActionPlan> plans = planService.findAll();
         return ResponseEntity.ok(plans);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<?> updatePlan(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) PlanRequestDTO planRequestDTO) {
         try {
             ActionPlan actionPlan = planService.update(id, planRequestDTO);
@@ -65,7 +65,7 @@ public class ActionPlanController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deletePlan(@PathVariable Long id) {
         try {
             planService.delete(id);
@@ -74,4 +74,6 @@ public class ActionPlanController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+
 }

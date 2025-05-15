@@ -10,6 +10,7 @@ public class StepMapper {
         Step step = new Step();
 
         step.setTitle(stepRequestDTO.title());
+        step.setActionPlan(stepRequestDTO.actionPlan());
         step.setAction(stepRequestDTO.action());
         step.setResponsibleArea(stepRequestDTO.responsibleArea());
         step.setStatus(stepRequestDTO.status());

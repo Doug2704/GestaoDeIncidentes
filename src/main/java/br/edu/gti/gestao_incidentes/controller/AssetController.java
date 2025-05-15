@@ -37,7 +37,7 @@ public class AssetController {
 
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/find/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         try {
             Asset foundasset = assetService.findById(id);
@@ -48,13 +48,13 @@ public class AssetController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Asset>> findAll() {
         List<Asset> assets = assetService.findAll();
         return ResponseEntity.ok(assets);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<?> updateAsset(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) AssetRequestDTO asset) {
         try {
             Asset updatedasset = assetService.update(id, asset);
@@ -64,7 +64,7 @@ public class AssetController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteAsset(@PathVariable Long id) {
         try {
             assetService.delete(id);

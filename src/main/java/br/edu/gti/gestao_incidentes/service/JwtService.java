@@ -36,6 +36,7 @@ public class JwtService {
                 .subject(authentication.getName())
                 .claim("id", user.getId())
                 .claim("scope", List.of(user.getProfile().getAuthority()))
+                .claim("profile", user.getProfile())
                 .build();
 
         return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
@@ -43,14 +44,11 @@ public class JwtService {
 
     public static Long getUserIdFromToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserAuthenticated) {
-            UserAuthenticated userAuth = (UserAuthenticated) authentication.getPrincipal();
+        if (authentication != null && authentication.getPrincipal() instanceof UserAuthenticated userAuth) {
             return userAuth.getUser().getId();
-        } else if (authentication != null && authentication.getPrincipal() instanceof Jwt) {
-            Jwt jwt = (Jwt) authentication.getPrincipal();
+        } else if (authentication != null && authentication.getPrincipal() instanceof Jwt jwt) {
             return jwt.getClaim("id");
         }
         return null;
     }
-
 }

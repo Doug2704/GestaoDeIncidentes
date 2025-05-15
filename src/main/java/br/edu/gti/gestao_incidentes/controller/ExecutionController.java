@@ -19,8 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ExecutionController {
     private final ExecutionService executionService;
-
     private final Long userId = JwtService.getUserIdFromToken();
+
     @PostMapping("/start")
     public ResponseEntity<?> startExecution(ActionPlan actionPlan) {
         try {
@@ -36,7 +36,7 @@ public class ExecutionController {
 
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/find/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         try {
             Execution foundExecution = executionService.findById(id);
@@ -47,7 +47,7 @@ public class ExecutionController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Execution>> findAll() {
         List<Execution> executions = executionService.findAll();
         return ResponseEntity.ok(executions);
@@ -64,7 +64,7 @@ public class ExecutionController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<?> deleteExecution(@PathVariable Long id) {
         try {
             executionService.delete(id);
