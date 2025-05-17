@@ -5,12 +5,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "step")
 @Getter
 @Setter
 
-//TODO implementar tasks
 public class Step {
 
     @Id
@@ -25,9 +26,8 @@ public class Step {
     @JoinColumn(name = "action_plan_id")
     private ActionPlan actionPlan;
 
-    //TODO mudar para entidade task
-    @Column(nullable = false, name = "action")
-    String action;
+    @OneToMany(mappedBy = "step", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks;
 
     //TODO após setado, apenas o admin poderá alterar
     @ManyToOne
@@ -38,7 +38,6 @@ public class Step {
     @Column(name = "step_status")
     private Status status;
 
-    //TODO max step duration
     @PrePersist
     public void prePersist() {
         if (status == null) {
