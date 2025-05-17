@@ -22,9 +22,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    public User create(@Validated(OnCreate.class) UserRequestDTO userRequestDTO) {
+    public User create(Long actuaAtionAreaId, @Validated(OnCreate.class) UserRequestDTO userRequestDTO) {
         try {
-            User user = UserMapper.toEntity(userRequestDTO);
+            User user = UserMapper.toEntity(userRequestDTO, actuaAtionAreaId);
             user.setPassword(passwordEncoder.encode(userRequestDTO.password()));
             return userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
@@ -32,8 +32,8 @@ public class UserService {
         }
     }
 
-    public List<UserResponseDTO> findAll() {
-        return userRepository.findAll().stream().map(UserMapper::toDto).toList();
+    public List<UserResponseDTO> findByAreaId(Long actuationAreaId) {
+        return userRepository.findByAreaId(actuationAreaId).stream().map(UserMapper::toDto).toList();
     }
 
     public UserResponseDTO findById(Long id) {

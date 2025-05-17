@@ -23,9 +23,9 @@ public class AssetController {
     private AssetService assetService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createAsset(@PathVariable Long responsibleAreaID, @RequestBody @Validated(OnCreate.class) AssetRequestDTO assetRequestDTO) {
+    public ResponseEntity<?> createAsset(@PathVariable Long responsibleAreaId, @RequestBody @Validated(OnCreate.class) AssetRequestDTO assetRequestDTO) {
         try {
-            Asset savedasset = assetService.create(responsibleAreaID, assetRequestDTO);
+            Asset savedasset = assetService.create(responsibleAreaId, assetRequestDTO);
             URI local = URI.create("/" + savedasset.getId());
             return ResponseEntity.created(local).body(savedasset);
 
@@ -49,8 +49,8 @@ public class AssetController {
     }
 
     @GetMapping("/find/all")
-    public ResponseEntity<List<Asset>> findByAreaId(@PathVariable Long areaId) {
-        List<Asset> assets = assetService.findByAreaId(areaId);
+    public ResponseEntity<List<Asset>> findByAreaId(@PathVariable Long responsibleAreaId) {
+        List<Asset> assets = assetService.findByAreaId(responsibleAreaId);
         return ResponseEntity.ok(assets);
     }
 

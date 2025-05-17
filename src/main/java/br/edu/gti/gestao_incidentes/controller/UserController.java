@@ -2,6 +2,7 @@ package br.edu.gti.gestao_incidentes.controller;
 
 import br.edu.gti.gestao_incidentes.dto.requests.UserRequestDTO;
 import br.edu.gti.gestao_incidentes.dto.responses.UserResponseDTO;
+import br.edu.gti.gestao_incidentes.entities.Asset;
 import br.edu.gti.gestao_incidentes.entities.user.User;
 import br.edu.gti.gestao_incidentes.service.UserService;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
@@ -18,16 +19,15 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/users")
+@RequestMapping("api/v1/areas/{areaId}/users")
 @RequiredArgsConstructor
 public class UserController {
-
     private final UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createUser(@RequestBody @Validated(OnCreate.class) UserRequestDTO userRequestDTO) {
+    public ResponseEntity<?> createUser(@PathVariable Long actuationAreaId,@RequestBody @Validated(OnCreate.class) UserRequestDTO userRequestDTO) {
         try {
-            User savedUser = userService.create(userRequestDTO);
+            User savedUser = userService.create(actuationAreaId, userRequestDTO);
             URI local = URI.create("/" + savedUser.getId());
             return ResponseEntity.created(local).body(savedUser);
 
@@ -49,11 +49,10 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
-
     @GetMapping("/find/all")
-    public ResponseEntity<List<UserResponseDTO>> findAll() {
-        List<UserResponseDTO> users = userService.findAll();
-        return ResponseEntity.ok(users);
+    public ResponseEntity<List<UserResponseDTO>> findByAreaId(@PathVariable Long actuationAreaId) {
+        List<UserResponseDTO> assets = userService.findByAreaId(actuationAreaId);
+        return ResponseEntity.ok(assets);
     }
 
     @PutMapping("/update/{id}")

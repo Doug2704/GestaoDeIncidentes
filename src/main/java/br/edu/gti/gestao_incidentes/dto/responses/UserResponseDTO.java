@@ -11,7 +11,7 @@ public record UserResponseDTO(
         String name,
         String username,
         String email,
-        Area actuationArea,
+        String actuationArea,
         Profile profile,
         @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
         LocalDateTime registrationDate
