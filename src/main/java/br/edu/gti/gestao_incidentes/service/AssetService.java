@@ -19,17 +19,17 @@ import java.util.List;
 public class AssetService {
     private final AssetRepository assetRepository;
 
-    public Asset create(@Validated(OnCreate.class) AssetRequestDTO assetRequestDTO) {
+    public Asset create(Long areaID, @Validated(OnCreate.class) AssetRequestDTO assetRequestDTO) {
         try {
-            Asset asset = AssetMapper.toEntity(assetRequestDTO);
+            Asset asset = AssetMapper.toEntity(assetRequestDTO, areaID);
             return assetRepository.save(asset);
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);
         }
     }
 
-    public List<Asset> findAll() {
-        return assetRepository.findAll();
+    public List<Asset> findByAreaId(Long areaId) {
+        return assetRepository.findByAreaId(areaId);
     }
 
     public Asset findById(Long id) {
@@ -39,7 +39,7 @@ public class AssetService {
     public Asset update(Long id, AssetRequestDTO assetRequestDTO) {
         Asset asset = assetRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhum ativo com o id: " + id));
         try {
-            AssetMapper.applyChanges(assetRequestDTO, asset);
+            if (assetRequestDTO.name() != null) asset.setName(assetRequestDTO.name());
             return assetRepository.save(asset);
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);

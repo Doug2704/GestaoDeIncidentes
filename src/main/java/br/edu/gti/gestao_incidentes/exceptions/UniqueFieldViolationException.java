@@ -11,7 +11,6 @@ public class UniqueFieldViolationException extends RuntimeException {
 
     private final List<String> messages;
 
-    //TODO escanear pontos de possíveis exceções de integridade de dados
     public UniqueFieldViolationException(DataIntegrityViolationException ex) {
         super(ex.getMessage());
         this.messages = new ArrayList<>();

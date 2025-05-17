@@ -17,15 +17,15 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/assets")
+@RequestMapping("api/v1/areas/{areaId}/assets")
 @RequiredArgsConstructor
 public class AssetController {
     private AssetService assetService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createAsset(@RequestBody @Validated(OnCreate.class) AssetRequestDTO assetRequestDTO) {
+    public ResponseEntity<?> createAsset(@PathVariable Long areaID, @RequestBody @Validated(OnCreate.class) AssetRequestDTO assetRequestDTO) {
         try {
-            Asset savedasset = assetService.create(assetRequestDTO);
+            Asset savedasset = assetService.create(areaID, assetRequestDTO);
             URI local = URI.create("/" + savedasset.getId());
             return ResponseEntity.created(local).body(savedasset);
 
@@ -49,8 +49,8 @@ public class AssetController {
     }
 
     @GetMapping("/find/all")
-    public ResponseEntity<List<Asset>> findAll() {
-        List<Asset> assets = assetService.findAll();
+    public ResponseEntity<List<Asset>> findByAreaId(@PathVariable Long areaId) {
+        List<Asset> assets = assetService.findByAreaId(areaId);
         return ResponseEntity.ok(assets);
     }
 

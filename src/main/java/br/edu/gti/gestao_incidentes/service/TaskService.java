@@ -52,7 +52,6 @@ public class TaskService {
         taskRepository.delete(task);
     }
 
-    //TODO incluir no controller 
     public void done(Long id) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma tarefa com o id: " + id));
         task.setDone(true);

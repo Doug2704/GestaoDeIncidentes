@@ -1,0 +1,4 @@
+
+//TODO alterar DTOS com campo de ID ao invés de entidades
+//TODO alterar para o seguinte: ex: primeiro se cria a área e depois os assets
+//TODO alterar os path e incluir: ex: /plan/{planId}/task/{taskId}
