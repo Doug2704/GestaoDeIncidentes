@@ -29,7 +29,7 @@ public class AssetService {
     }
 
     public List<Asset> findByAreaId(Long responsibleAreaId) {
-        return assetRepository.findByAreaId(responsibleAreaId);
+        return assetRepository.findByResponsibleArea_Id(responsibleAreaId);
     }
 
     public Asset findById(Long id) {

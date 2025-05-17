@@ -29,7 +29,7 @@ public class TaskService {
     }
 
     public List<Task> findByStepId(Long stepId) {
-        return taskRepository.findByStepId(stepId);
+        return taskRepository.findByStep_Id(stepId);
     }
 
     public Task findById(Long id) {

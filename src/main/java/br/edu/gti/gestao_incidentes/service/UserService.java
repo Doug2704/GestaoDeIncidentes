@@ -33,7 +33,7 @@ public class UserService {
     }
 
     public List<UserResponseDTO> findByAreaId(Long actuationAreaId) {
-        return userRepository.findByAreaId(actuationAreaId).stream().map(UserMapper::toDto).toList();
+        return userRepository.findByActuationArea_Id(actuationAreaId).stream().map(UserMapper::toDto).toList();
     }
 
     public UserResponseDTO findById(Long id) {

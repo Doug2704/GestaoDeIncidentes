@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface AssetRepository extends JpaRepository<Asset, Long> {
-    List<Asset> findByAreaId(Long areaId);
+    List<Asset> findByResponsibleArea_Id(Long areaId);
 }

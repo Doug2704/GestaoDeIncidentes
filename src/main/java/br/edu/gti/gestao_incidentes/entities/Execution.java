@@ -52,7 +52,6 @@ public class Execution {
         this.openingDate = LocalDateTime.now();
     }
 
-    @PreUpdate
     public void setValidator(User validator) {
         if (validator != getRequester()) this.validator = validator;
     }

@@ -3,8 +3,6 @@ package br.edu.gti.gestao_incidentes.service;
 import br.edu.gti.gestao_incidentes.dto.mappers.PlanMapper;
 import br.edu.gti.gestao_incidentes.dto.requests.PlanRequestDTO;
 import br.edu.gti.gestao_incidentes.entities.ActionPlan;
-import br.edu.gti.gestao_incidentes.entities.Asset;
-import br.edu.gti.gestao_incidentes.enums.Profile;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.ActionPlanRepository;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
@@ -32,7 +30,7 @@ public class ActionPlanService {
         }
     }
     public List<ActionPlan> findByAreaId(Long areaId) {
-        return planRepository.findByAreaId(areaId);
+        return planRepository.findByResponsibleArea_Id(areaId);
     }
     public ActionPlan findById(Long id) {
         return planRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhum plano de ação com com o id: " + id));

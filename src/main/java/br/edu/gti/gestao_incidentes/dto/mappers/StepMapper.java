@@ -32,7 +32,6 @@ public class StepMapper {
     public static void applyChanges(StepRequestDTO stepRequestDTO, Step step) {
         if (stepRequestDTO.title() != null) step.setTitle(stepRequestDTO.title());
         if (stepRequestDTO.tasks() != null) step.setTasks(stepRequestDTO.tasks());
-        //  if (stepRequestDTO.responsibleArea() != null) step.setResponsibleArea(stepRequestDTO.responsibleArea());
         if (stepRequestDTO.status() != null) step.setStatus(stepRequestDTO.status());
     }
 }
