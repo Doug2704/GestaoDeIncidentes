@@ -3,6 +3,7 @@ package br.edu.gti.gestao_incidentes.service;
 import br.edu.gti.gestao_incidentes.dto.mappers.PlanMapper;
 import br.edu.gti.gestao_incidentes.dto.requests.PlanRequestDTO;
 import br.edu.gti.gestao_incidentes.entities.ActionPlan;
+import br.edu.gti.gestao_incidentes.entities.Asset;
 import br.edu.gti.gestao_incidentes.enums.Profile;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.ActionPlanRepository;
@@ -20,7 +21,7 @@ import java.util.List;
 public class ActionPlanService {
     private final ActionPlanRepository planRepository;
 
-    public ActionPlan create(@Validated(OnCreate.class) PlanRequestDTO planRequestDTO) {
+    public ActionPlan create(Long areaID, @Validated(OnCreate.class) PlanRequestDTO planRequestDTO) {
         try {
             ActionPlan plan = PlanMapper.toEntity(planRequestDTO);
             return planRepository.save(plan);
@@ -30,11 +31,9 @@ public class ActionPlanService {
             throw new RuntimeException(e);
         }
     }
-
-    public List<ActionPlan> findAll() {
-        return planRepository.findAll();
+    public List<ActionPlan> findByAreaId(Long areaId) {
+        return planRepository.findByAreaId(areaId);
     }
-
     public ActionPlan findById(Long id) {
         return planRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhum plano de ação com com o id: " + id));
     }
@@ -53,7 +52,6 @@ public class ActionPlanService {
         ActionPlan plan = planRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhum plano de ação com com o id: " + id));
         planRepository.delete(plan);
     }
-
 
 
 }

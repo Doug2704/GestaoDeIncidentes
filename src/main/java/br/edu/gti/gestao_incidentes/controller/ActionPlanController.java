@@ -2,9 +2,7 @@ package br.edu.gti.gestao_incidentes.controller;
 
 import br.edu.gti.gestao_incidentes.dto.requests.PlanRequestDTO;
 import br.edu.gti.gestao_incidentes.entities.ActionPlan;
-import br.edu.gti.gestao_incidentes.enums.Profile;
 import br.edu.gti.gestao_incidentes.service.ActionPlanService;
-import br.edu.gti.gestao_incidentes.service.JwtService;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import br.edu.gti.gestao_incidentes.validation.OnUpdate;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,15 +17,15 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/plans")
+@RequestMapping("api/v1/areas/{areaId}/plans")
 @RequiredArgsConstructor
 public class ActionPlanController {
     private final ActionPlanService planService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createPlan(@RequestBody @Validated(OnCreate.class) PlanRequestDTO planRequestDTO) {
+    public ResponseEntity<?> createPlan(@PathVariable Long areaID, @RequestBody @Validated(OnCreate.class) PlanRequestDTO planRequestDTO) {
         try {
-            ActionPlan savedPlan = planService.create(planRequestDTO);
+            ActionPlan savedPlan = planService.create(areaID, planRequestDTO);
             URI local = URI.create("/" + savedPlan.getId());
             return ResponseEntity.created(local).body(savedPlan);
 
@@ -50,8 +48,8 @@ public class ActionPlanController {
     }
 
     @GetMapping("/find/all")
-    public ResponseEntity<List<ActionPlan>> findAll() {
-        List<ActionPlan> plans = planService.findAll();
+    public ResponseEntity<List<ActionPlan>> findByAreaId(Long areaId) {
+        List<ActionPlan> plans = planService.findByAreaId(areaId);
         return ResponseEntity.ok(plans);
     }
 
@@ -74,6 +72,4 @@ public class ActionPlanController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
-
-
 }
