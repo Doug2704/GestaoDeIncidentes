@@ -50,7 +50,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("/find/all")
     public ResponseEntity<List<UserResponseDTO>> findAll() {
         List<UserResponseDTO> users = userService.findAll();
         return ResponseEntity.ok(users);

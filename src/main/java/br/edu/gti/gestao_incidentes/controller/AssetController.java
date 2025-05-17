@@ -17,7 +17,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/admin/assets")
+@RequestMapping("api/v1/assets")
 @RequiredArgsConstructor
 public class AssetController {
     private AssetService assetService;
@@ -48,7 +48,7 @@ public class AssetController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("/find/all")
     public ResponseEntity<List<Asset>> findAll() {
         List<Asset> assets = assetService.findAll();
         return ResponseEntity.ok(assets);

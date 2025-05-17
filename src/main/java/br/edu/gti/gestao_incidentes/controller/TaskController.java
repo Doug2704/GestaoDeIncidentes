@@ -48,7 +48,7 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("/find/all")
     public ResponseEntity<List<Task>> findAll() {
         List<Task> tasks = taskService.findAll();
         return ResponseEntity.ok(tasks);

@@ -49,7 +49,7 @@ public class ActionPlanController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("/find/all")
     public ResponseEntity<List<ActionPlan>> findAll() {
         List<ActionPlan> plans = planService.findAll();
         return ResponseEntity.ok(plans);

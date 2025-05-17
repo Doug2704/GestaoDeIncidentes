@@ -17,7 +17,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/admin/areas")
+@RequestMapping("api/v1/areas")
 @RequiredArgsConstructor
 public class AreaController {
     private AreaService areaService;
@@ -48,7 +48,7 @@ public class AreaController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("/find/all")
     public ResponseEntity<List<Area>> findAll() {
         List<Area> areas = areaService.findAll();
         return ResponseEntity.ok(areas);

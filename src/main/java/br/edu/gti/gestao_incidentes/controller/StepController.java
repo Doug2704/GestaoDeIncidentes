@@ -48,7 +48,7 @@ public class StepController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("/find/all")
     public ResponseEntity<List<Step>> findAll() {
         List<Step> steps = stepService.findAll();
         return ResponseEntity.ok(steps);

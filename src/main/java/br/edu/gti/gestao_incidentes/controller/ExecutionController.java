@@ -47,7 +47,7 @@ public class ExecutionController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("/find/all")
     public ResponseEntity<List<Execution>> findAll() {
         List<Execution> executions = executionService.findAll();
         return ResponseEntity.ok(executions);

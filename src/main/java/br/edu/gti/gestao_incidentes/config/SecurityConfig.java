@@ -40,32 +40,41 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        //public routes
-                        .requestMatchers(
-                                "/api/v1/auth/login", "/v3/api-docs/**"
-                                , "/swagger-ui/**", "/swagger-ui.html",
-                                "/api/v1/plans/all", "/api/v1/plans/find").permitAll()
 
-                        //only admin
+                        // public routes
                         .requestMatchers(
-                                "/api/v1/admin/**", "/api/v1/assets/**",
-                                "/api/v1/areas/**", "/api/v1/users/**",
-                                "/api/v1/plans/all", "/api/v1/plans/find",
-                                "/api/v1/plans/delete").hasAuthority("SCOPE_ADMIN")
+                                "/api/v1/auth/login",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
 
-                        //only manager
-                        .requestMatchers("/api/v1/steps/**",
-                                "/api/v1/plans/create", "/api/v1/plans/find",
-                                "/api/v1/plans/all", "/api/v1/plans/update"
-                        ).hasAuthority("SCOPE_MANAGER")
-
-                        //only operator
+                        // view access (default, operator, manager, admin)
                         .requestMatchers(
-                                "/api/v1/plans/find", "/api/v1/plans/all",
+                                "/api/v1/*/find/**"
+
+                        ).hasAnyAuthority("SCOPE_DEFAULT", "SCOPE_OPERATOR", "SCOPE_MANAGER", "SCOPE_ADMIN")
+
+                        // execution access (only operator)
+                        .requestMatchers(
                                 "/api/v1/exec/**"
+                        ).hasAuthority("SCOPE_OPERATOR")
+
+                        // create and update access (only manager)
+                        .requestMatchers(
+                                "/api/v1/*/create", "/api/v1/*/update/**"
                         ).hasAuthority("SCOPE_MANAGER")
 
-                        //any other routes that need authentication
+                        // delete and admin access (only admin)
+                        .requestMatchers(
+                                "/api/v1/*/delete/**",
+                                "/api/v1/admin/**",
+                                "/api/v1/assets/**",
+                                "/api/v1/areas/**",
+                                "/api/v1/users/**"
+                        ).hasAuthority("SCOPE_ADMIN")
+
+                        // any other route requires authentication
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(conf -> conf.jwt(Customizer.withDefaults()));

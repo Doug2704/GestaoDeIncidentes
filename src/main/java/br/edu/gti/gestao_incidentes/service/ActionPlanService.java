@@ -19,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ActionPlanService {
     private final ActionPlanRepository planRepository;
-    private final Profile profile = JwtService.getProfileFromToken();
 
     public ActionPlan create(@Validated(OnCreate.class) PlanRequestDTO planRequestDTO) {
         try {
