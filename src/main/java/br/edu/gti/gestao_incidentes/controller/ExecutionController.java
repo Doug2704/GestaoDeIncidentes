@@ -1,6 +1,5 @@
 package br.edu.gti.gestao_incidentes.controller;
 
-import br.edu.gti.gestao_incidentes.entities.ActionPlan;
 import br.edu.gti.gestao_incidentes.entities.Execution;
 import br.edu.gti.gestao_incidentes.service.ExecutionService;
 import br.edu.gti.gestao_incidentes.service.JwtService;
@@ -15,16 +14,16 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/executions")
+@RequestMapping("api/v1/plans/{planId}/executions")
 @RequiredArgsConstructor
 public class ExecutionController {
     private final ExecutionService executionService;
     private final Long userId = JwtService.getUserIdFromToken();
 
     @PostMapping("/start")
-    public ResponseEntity<?> startExecution(ActionPlan actionPlan) {
+    public ResponseEntity<?> startExecution(@PathVariable Long planId) {
         try {
-            Execution savedExecution = executionService.start(actionPlan, userId);
+            Execution savedExecution = executionService.start(planId, userId);
             URI local = URI.create("/" + savedExecution.getId());
             return ResponseEntity.created(local).body(savedExecution);
 
@@ -48,8 +47,8 @@ public class ExecutionController {
     }
 
     @GetMapping("/find/all")
-    public ResponseEntity<List<Execution>> findAll() {
-        List<Execution> executions = executionService.findAll();
+    public ResponseEntity<List<Execution>> findByPlanId(@PathVariable Long planId) {
+        List<Execution> executions = executionService.findByActionPlan(planId);
         return ResponseEntity.ok(executions);
     }
 

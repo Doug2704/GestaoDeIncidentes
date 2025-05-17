@@ -9,7 +9,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-//TODO tratar área
 public record StepRequestDTO(
         @NotBlank(message = "Título é obrigatório.", groups = OnCreate.class)
         String title,

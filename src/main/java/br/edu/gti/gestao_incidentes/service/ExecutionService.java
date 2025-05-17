@@ -6,6 +6,7 @@ import br.edu.gti.gestao_incidentes.entities.Step;
 import br.edu.gti.gestao_incidentes.entities.user.User;
 import br.edu.gti.gestao_incidentes.enums.Status;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
+import br.edu.gti.gestao_incidentes.repository.ActionPlanRepository;
 import br.edu.gti.gestao_incidentes.repository.ExecutionRepository;
 import br.edu.gti.gestao_incidentes.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,10 +21,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ExecutionService {
     private final ExecutionRepository executionRepository;
+    private final ActionPlanRepository planRepository;
     private final UserRepository userRepository;
 
-    public Execution start(ActionPlan actionPlan, Long requesterId) {
+    public Execution start(Long actionPlanId, Long requesterId) {
         Execution execution = new Execution();
+        ActionPlan actionPlan = planRepository.findById(actionPlanId).orElseThrow(() -> new EntityNotFoundException("Plano de Ação não encontrado."));
         startSteps(actionPlan);
         try {
             User requester = userRepository.findById(requesterId).get();
@@ -37,8 +40,8 @@ public class ExecutionService {
         }
     }
 
-    public List<Execution> findAll() {
-        return executionRepository.findAll();
+    public List<Execution> findByActionPlan(Long planId) {
+        return executionRepository.findByActionPlan_id(planId);
     }
 
     public Execution findById(Long id) {
