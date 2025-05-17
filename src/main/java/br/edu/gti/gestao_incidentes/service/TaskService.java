@@ -19,17 +19,17 @@ import java.util.List;
 public class TaskService {
     private final TaskRepository taskRepository;
 
-    public Task create(@Validated(OnCreate.class) TaskRequestDTO taskRequestDTO) {
+    public Task create(Long stepId, @Validated(OnCreate.class) TaskRequestDTO taskRequestDTO) {
         try {
-            Task task = TaskMapper.toEntity(taskRequestDTO);
+            Task task = TaskMapper.toEntity(taskRequestDTO, stepId);
             return taskRepository.save(task);
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);
         }
     }
 
-    public List<Task> findAll() {
-        return taskRepository.findAll();
+    public List<Task> findByStepId(Long stepId) {
+        return taskRepository.findByStepId(stepId);
     }
 
     public Task findById(Long id) {

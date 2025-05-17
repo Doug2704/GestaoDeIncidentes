@@ -17,15 +17,15 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/tasks")
+@RequestMapping("api/v1/steps/{stepId}/tasks")
 @RequiredArgsConstructor
 public class TaskController {
     private TaskService taskService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createTask(@RequestBody @Validated(OnCreate.class) TaskRequestDTO taskRequestDTO) {
+    public ResponseEntity<?> createTask(@PathVariable Long stepId, @RequestBody @Validated(OnCreate.class) TaskRequestDTO taskRequestDTO) {
         try {
-            Task savedtask = taskService.create(taskRequestDTO);
+            Task savedtask = taskService.create(stepId, taskRequestDTO);
             URI local = URI.create("/" + savedtask.getId());
             return ResponseEntity.created(local).body(savedtask);
 
@@ -38,9 +38,9 @@ public class TaskController {
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
+    public ResponseEntity<?> findById(@PathVariable Long stepId) {
         try {
-            Task foundtask = taskService.findById(id);
+            Task foundtask = taskService.findById(stepId);
             return ResponseEntity.ok(foundtask);
 
         } catch (EntityNotFoundException e) {
@@ -49,8 +49,8 @@ public class TaskController {
     }
 
     @GetMapping("/find/all")
-    public ResponseEntity<List<Task>> findAll() {
-        List<Task> tasks = taskService.findAll();
+    public ResponseEntity<List<Task>> findByPlanId(@PathVariable Long planId) {
+        List<Task> tasks = taskService.findByStepId(planId);
         return ResponseEntity.ok(tasks);
     }
 
