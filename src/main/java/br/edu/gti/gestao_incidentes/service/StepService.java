@@ -20,17 +20,17 @@ import java.util.List;
 public class StepService {
     private final StepRepository stepRepository;
 
-    public Step create(@Validated(OnCreate.class) StepRequestDTO stepRequestDTO) {
+    public Step create(Long planId, @Validated(OnCreate.class) StepRequestDTO stepRequestDTO) {
         try {
-            Step step = StepMapper.toEntity(stepRequestDTO);
+            Step step = StepMapper.toEntity(stepRequestDTO, planId);
             return stepRepository.save(step);
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);
         }
     }
 
-    public List<Step> findAll() {
-        return stepRepository.findAll();
+    public List<Step> findByPlanId(Long planId) {
+        return stepRepository.findByPlanId(planId);
     }
 
     public Step findById(Long id) {

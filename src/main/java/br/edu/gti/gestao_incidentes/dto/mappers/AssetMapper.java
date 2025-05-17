@@ -11,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 public class AssetMapper {
     private static AreaRepository areaRepository;
 
-    public static Asset toEntity(AssetRequestDTO assetRequestDTO, Long areaId) {
+    public static Asset toEntity(AssetRequestDTO assetRequestDTO, Long responsibleAreaId) {
         if (assetRequestDTO == null) return null;
         Asset asset = new Asset();
-        Area responsibleArea = areaRepository.findById(assetRequestDTO.areaId())
+        Area responsibleArea = areaRepository.findById(responsibleAreaId)
                 .orElseThrow(() -> new EntityNotFoundException("Área não encontrada"));
         asset.setName(assetRequestDTO.name());
         asset.setResponsibleArea(responsibleArea);

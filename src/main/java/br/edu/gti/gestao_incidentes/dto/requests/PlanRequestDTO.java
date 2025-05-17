@@ -17,9 +17,6 @@ public record PlanRequestDTO(
         @NotEmpty(message = "Pelo menos uma etapa deve ser informada", groups = OnCreate.class)
         List<Step> steps,
 
-        @NotNull(message = "ID da área responsável é obrigatório", groups = OnCreate.class)
-        Long responsibleAreaId,
-
         @NotEmpty(message = "Pelo menos uma área afetada deve ser informada", groups = OnCreate.class)
         List<Area> affectedAreas,
 

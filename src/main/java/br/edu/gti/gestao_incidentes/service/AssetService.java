@@ -19,17 +19,17 @@ import java.util.List;
 public class AssetService {
     private final AssetRepository assetRepository;
 
-    public Asset create(Long areaID, @Validated(OnCreate.class) AssetRequestDTO assetRequestDTO) {
+    public Asset create(Long responsibleAreaId, @Validated(OnCreate.class) AssetRequestDTO assetRequestDTO) {
         try {
-            Asset asset = AssetMapper.toEntity(assetRequestDTO, areaID);
+            Asset asset = AssetMapper.toEntity(assetRequestDTO, responsibleAreaId);
             return assetRepository.save(asset);
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);
         }
     }
 
-    public List<Asset> findByAreaId(Long areaId) {
-        return assetRepository.findByAreaId(areaId);
+    public List<Asset> findByAreaId(Long responsibleAreaId) {
+        return assetRepository.findByAreaId(responsibleAreaId);
     }
 
     public Asset findById(Long id) {

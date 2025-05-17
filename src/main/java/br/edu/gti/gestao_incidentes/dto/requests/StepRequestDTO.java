@@ -11,18 +11,16 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
+//TODO tratar área
 public record StepRequestDTO(
         @NotBlank(message = "Título é obrigatório.", groups = OnCreate.class)
         String title,
 
-        @NotNull(message = "É necessário associar a um plano de ação", groups = OnCreate.class)
-        ActionPlan actionPlan,
-
         @NotEmpty(message = "Pelo menos uma tarefa deve ser informada", groups = OnCreate.class)
         List<Task> tasks,
 
-        @NotNull(message = "Informe a área responsável", groups = OnCreate.class)
-        Area responsibleArea,
+        @NotNull(message = "ID da área responsável é obrigatório", groups = OnCreate.class)
+        Long responsibleAreaId,
 
         Status status
 ) {

@@ -10,10 +10,10 @@ import jakarta.persistence.EntityNotFoundException;
 public class PlanMapper {
     private static AreaRepository areaRepository;
 
-    public static ActionPlan toEntity(PlanRequestDTO planRequestDTO) {
+    public static ActionPlan toEntity(PlanRequestDTO planRequestDTO, Long responsibleAreaId) {
         if (planRequestDTO == null) return null;
         ActionPlan actionPlan = new ActionPlan();
-        Area responsibleArea = areaRepository.findById(planRequestDTO.responsibleAreaId())
+        Area responsibleArea = areaRepository.findById(responsibleAreaId)
                 .orElseThrow(() -> new EntityNotFoundException("Área não encontrada"));
 
         actionPlan.setTitle(planRequestDTO.title());

@@ -29,6 +29,4 @@ public class Area {
     public void prePersist() {
         this.creationDate = LocalDateTime.now();
     }
-
-
 }

@@ -17,15 +17,15 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/steps")
+@RequestMapping("api/v1/plans/{planId}/steps")
 @RequiredArgsConstructor
 public class StepController {
     private StepService stepService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createStep(@RequestBody @Validated(OnCreate.class) StepRequestDTO stepRequestDTO) {
+    public ResponseEntity<?> createStep(@PathVariable Long planId, @RequestBody @Validated(OnCreate.class) StepRequestDTO stepRequestDTO) {
         try {
-            Step savedStep = stepService.create(stepRequestDTO);
+            Step savedStep = stepService.create(planId, stepRequestDTO);
             URI local = URI.create("/" + savedStep.getId());
             return ResponseEntity.created(local).body(savedStep);
 
@@ -34,7 +34,6 @@ public class StepController {
         } catch (RuntimeException e) {
             return ResponseEntity.ok(e.getMessage());
         }
-
     }
 
     @GetMapping("/find/{id}")
@@ -49,8 +48,8 @@ public class StepController {
     }
 
     @GetMapping("/find/all")
-    public ResponseEntity<List<Step>> findAll() {
-        List<Step> steps = stepService.findAll();
+    public ResponseEntity<List<Step>> findByPlanId(@PathVariable Long planId) {
+        List<Step> steps = stepService.findByPlanId(planId);
         return ResponseEntity.ok(steps);
     }
 

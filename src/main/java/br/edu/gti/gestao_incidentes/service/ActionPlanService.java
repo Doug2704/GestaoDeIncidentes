@@ -21,9 +21,9 @@ import java.util.List;
 public class ActionPlanService {
     private final ActionPlanRepository planRepository;
 
-    public ActionPlan create(Long areaID, @Validated(OnCreate.class) PlanRequestDTO planRequestDTO) {
+    public ActionPlan create(Long responsibleAreaId, @Validated(OnCreate.class) PlanRequestDTO planRequestDTO) {
         try {
-            ActionPlan plan = PlanMapper.toEntity(planRequestDTO);
+            ActionPlan plan = PlanMapper.toEntity(planRequestDTO, responsibleAreaId);
             return planRepository.save(plan);
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);

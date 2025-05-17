@@ -23,9 +23,9 @@ public class AssetController {
     private AssetService assetService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createAsset(@PathVariable Long areaID, @RequestBody @Validated(OnCreate.class) AssetRequestDTO assetRequestDTO) {
+    public ResponseEntity<?> createAsset(@PathVariable Long responsibleAreaID, @RequestBody @Validated(OnCreate.class) AssetRequestDTO assetRequestDTO) {
         try {
-            Asset savedasset = assetService.create(areaID, assetRequestDTO);
+            Asset savedasset = assetService.create(responsibleAreaID, assetRequestDTO);
             URI local = URI.create("/" + savedasset.getId());
             return ResponseEntity.created(local).body(savedasset);
 
