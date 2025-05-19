@@ -2,7 +2,6 @@ package br.edu.gti.gestao_incidentes.controller;
 
 import br.edu.gti.gestao_incidentes.dto.requests.LoginRequestDTO;
 import br.edu.gti.gestao_incidentes.dto.responses.TokenResponseDTO;
-import br.edu.gti.gestao_incidentes.enums.Profile;
 import br.edu.gti.gestao_incidentes.repository.UserRepository;
 import br.edu.gti.gestao_incidentes.service.JwtService;
 import br.edu.gti.gestao_incidentes.service.UserDetailsServiceImpl;
@@ -15,9 +14,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor

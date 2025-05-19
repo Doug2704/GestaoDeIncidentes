@@ -19,16 +19,16 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/areas/{areaId}/users")
+@RequestMapping("api/v1/areas/{actuationAreaId}/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createUser(@PathVariable Long actuationAreaId,@RequestBody @Validated(OnCreate.class) UserRequestDTO userRequestDTO) {
+    public ResponseEntity<?> createUser(@PathVariable Long actuationAreaId, @RequestBody @Validated(OnCreate.class) UserRequestDTO userRequestDTO) {
         try {
-            User savedUser = userService.create(actuationAreaId, userRequestDTO);
-            URI local = URI.create("/" + savedUser.getId());
+            UserResponseDTO savedUser = userService.create(actuationAreaId, userRequestDTO);
+            URI local = URI.create("/" + savedUser.id());
             return ResponseEntity.created(local).body(savedUser);
 
         } catch (DataIntegrityViolationException e) {
@@ -36,7 +36,6 @@ public class UserController {
         } catch (RuntimeException e) {
             return ResponseEntity.ok(e.getMessage());
         }
-
     }
 
     @GetMapping("/find/{id}")
@@ -49,6 +48,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
     @GetMapping("/find/all")
     public ResponseEntity<List<UserResponseDTO>> findByAreaId(@PathVariable Long actuationAreaId) {
         List<UserResponseDTO> assets = userService.findByAreaId(actuationAreaId);
@@ -58,7 +58,7 @@ public class UserController {
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) UserRequestDTO user) {
         try {
-            User updatedUser = userService.update(id, user);
+            UserResponseDTO updatedUser = userService.update(id, user);
             return ResponseEntity.ok(updatedUser);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

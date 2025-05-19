@@ -1,6 +1,7 @@
 package br.edu.gti.gestao_incidentes.entities;
 
 import br.edu.gti.gestao_incidentes.enums.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +12,6 @@ import java.util.List;
 @Table(name = "step")
 @Getter
 @Setter
-
 public class Step {
 
     @Id
@@ -23,6 +23,7 @@ public class Step {
     String title;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "action_plan_id")
     private ActionPlan actionPlan;
 

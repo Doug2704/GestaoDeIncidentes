@@ -24,8 +24,6 @@ public record UserRequestDTO(
         @NotBlank(message = "Senha é obrigatória", groups = OnCreate.class)
         String password,
 
-        Long actuationAreaId,
-
         Profile profile
 
 ) {

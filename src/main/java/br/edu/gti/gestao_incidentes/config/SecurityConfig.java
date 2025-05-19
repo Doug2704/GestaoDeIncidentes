@@ -6,6 +6,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -35,7 +36,6 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
@@ -49,38 +49,93 @@ public class SecurityConfig {
                                 "/swagger-ui.html"
                         ).permitAll()
 
-                        // view access (default, operator, manager, admin)
+                        // view access (todos)
                         .requestMatchers(
-                                "/api/v1/*/find/**"
+                                "/api/v1/*/find/**", "/api/v1/*/*/*/find/**"
+                        ).permitAll()
 
-                        ).hasAnyAuthority("SCOPE_DEFAULT", "SCOPE_OPERATOR", "SCOPE_MANAGER", "SCOPE_ADMIN")
+                        // ===== USERS =====
+                        // Criar usuário (admin)
+                        .requestMatchers(HttpMethod.POST, "/api/v1/areas/*/users/create/**")
+                        .hasAuthority("SCOPE_ADMIN")
+                        // Atualizar usuário (todos)
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/areas/*/users/update/**")
+                        .hasAnyAuthority("SCOPE_OPERATOR", "SCOPE_MANAGER", "SCOPE_ADMIN")
+                        // Deletar usuário (todos)
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/areas/*/users/delete/**")
+                        .hasAnyAuthority("SCOPE_OPERATOR", "SCOPE_MANAGER", "SCOPE_ADMIN")
 
-                        // execution access (only operator)
-                        .requestMatchers(
-                                "/api/v1/exec/**"
-                        ).hasAuthority("SCOPE_OPERATOR")
+                        // ===== PLANS =====
+                        // Criar plano (manager)
+                        .requestMatchers(HttpMethod.POST, "/api/v1/areas/*/plans/create")
+                        .hasAuthority("SCOPE_MANAGER")
+                        // Atualizar plano (manager)
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/areas/*/plans/update/**")
+                        .hasAuthority("SCOPE_MANAGER")
+                        // Deletar plano (manager)
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/areas/*/plans/delete/**")
+                        .hasAuthority("SCOPE_MANAGER")
 
-                        // create and update access (only manager)
-                        .requestMatchers(
-                                "/api/v1/*/create", "/api/v1/*/update/**"
-                        ).hasAuthority("SCOPE_MANAGER")
+                        // ===== AREAS =====
+                        .requestMatchers("/api/v1/areas/**")
+                        .hasAuthority("SCOPE_ADMIN")
 
-                        // delete and admin access (only admin)
-                        .requestMatchers(
-                                "/api/v1/*/delete/**",
-                                "/api/v1/admin/**",
-                                "/api/v1/assets/**",
-                                "/api/v1/areas/**",
-                                "/api/v1/users/**"
-                        ).hasAuthority("SCOPE_ADMIN")
+                        // ===== ASSETS =====
+                        .requestMatchers("/api/v1/assets/**")
+                        .hasAuthority("SCOPE_ADMIN")
 
-                        // any other route requires authentication
+                        // ===== EXECUTIONS =====
+                        // Criar execução (operator)
+                        .requestMatchers(HttpMethod.POST, "/api/v1/plans/*/executions/start")
+                        .hasAuthority("SCOPE_OPERATOR")
+                        // Atualizar execução (operator)
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/plans/*/executions/update/**")
+                        .hasAuthority("SCOPE_OPERATOR")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/plans/*/executions/finish/**")
+                        .hasAuthority("SCOPE_OPERATOR")
+                        // Deletar execução (admin)
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/plans/*/executions/delete/**")
+                        .hasAuthority("SCOPE_ADMIN")
+
+                        // ===== STEPS =====
+                        // Criar step (manager)
+                        .requestMatchers(HttpMethod.POST, "/api/v1/plans/*/step/create/**")
+                        .hasAuthority("SCOPE_MANAGER")
+                        // Atualizar step (operator, manager) TODO: verificar setSatus para operador
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/plans/*/step/update/**")
+                        .hasAnyAuthority("SCOPE_OPERATOR", "SCOPE_MANAGER")
+                        // Deletar step (manager)
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/plans/*/step/delete/**")
+                        .hasAuthority("SCOPE_MANAGER")
+
+                        // ===== TASKS =====
+                        // Criar task (manager)
+                        .requestMatchers(HttpMethod.POST, "/api/v1/step/*/task/create/**")
+                        .hasAuthority("SCOPE_MANAGER")
+                        // Atualizar task (operator, manager) TODO: verificar setSatus para operador
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/step/*/task/update/**")
+                        .hasAnyAuthority("SCOPE_OPERATOR", "SCOPE_MANAGER")
+                        // Deletar task (manager)
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/step/*/task/delete/**")
+                        .hasAuthority("SCOPE_MANAGER")
+
+                        // ===== DELETES GERAIS =====
+                        .requestMatchers("/api/v1/*/delete/**", "/api/v1/*/*/*/delete/**")
+                        .hasAuthority("SCOPE_ADMIN")
+
+                        // ===== ADMIN PATHS EXCLUSIVOS =====
+                        .requestMatchers("/api/v1/admin/**")
+                        .hasAuthority("SCOPE_ADMIN")
+
+                        // catch-all
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(conf -> conf.jwt(Customizer.withDefaults()));
 
         return http.build();
     }
+
+
 
     @Bean
     JwtDecoder jwtDecoder() {

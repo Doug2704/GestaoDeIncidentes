@@ -20,8 +20,9 @@ import java.util.List;
 @RequestMapping("api/v1/areas")
 @RequiredArgsConstructor
 public class AreaController {
-    private AreaService areaService;
+    private final AreaService areaService;
 
+    //TODO verificar exceções
     @PostMapping("/create")
     public ResponseEntity<?> createArea(@RequestBody @Validated(OnCreate.class) AreaRequestDTO AreaRequestDTO) {
         try {

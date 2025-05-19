@@ -8,6 +8,7 @@ import jakarta.validation.constraints.*;
 
 import java.util.List;
 
+//TODO tratar área (buscar pelo id) e etapas
 public record PlanRequestDTO(
 
         @NotBlank(message = "Título é obrigatório", groups = OnCreate.class)
@@ -15,10 +16,10 @@ public record PlanRequestDTO(
         String title,
 
         @NotEmpty(message = "Pelo menos uma etapa deve ser informada", groups = OnCreate.class)
-        List<Step> steps,
+        List<StepRequestDTO> stepRequestDTOS,
 
         @NotEmpty(message = "Pelo menos uma área afetada deve ser informada", groups = OnCreate.class)
-        List<Area> affectedAreas,
+        List<Long> affectedAreasIds,
 
         @NotBlank(message = "Descreva o incidente", groups = OnCreate.class)
         @Size(min = 10, message = "Descrição do incidente precisa ter, pelo menos, {min} caracteres.")
@@ -32,5 +33,5 @@ public record PlanRequestDTO(
 
         @NotNull(message = "Defina uma duração máxima sugerida para a execução desse plano de ação.", groups = OnCreate.class)
         Long planMaxDuration
-        ) {
+) {
 }

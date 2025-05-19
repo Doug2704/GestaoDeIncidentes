@@ -2,8 +2,10 @@ package br.edu.gti.gestao_incidentes.service;
 
 import br.edu.gti.gestao_incidentes.dto.mappers.AssetMapper;
 import br.edu.gti.gestao_incidentes.dto.requests.AssetRequestDTO;
+import br.edu.gti.gestao_incidentes.entities.Area;
 import br.edu.gti.gestao_incidentes.entities.Asset;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
+import br.edu.gti.gestao_incidentes.repository.AreaRepository;
 import br.edu.gti.gestao_incidentes.repository.AssetRepository;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,10 +20,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AssetService {
     private final AssetRepository assetRepository;
+    private final AreaRepository areaRepository;
 
     public Asset create(Long responsibleAreaId, @Validated(OnCreate.class) AssetRequestDTO assetRequestDTO) {
         try {
-            Asset asset = AssetMapper.toEntity(assetRequestDTO, responsibleAreaId);
+            Asset asset = AssetMapper.toEntity(assetRequestDTO);
+            Area responsibleArea = areaRepository.findById(responsibleAreaId)
+                    .orElseThrow(() -> new EntityNotFoundException("Área não encontrada"));
+            asset.setResponsibleArea(responsibleArea);
+
             return assetRepository.save(asset);
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);

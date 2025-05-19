@@ -25,11 +25,11 @@ public class SwaggerConfig {
     public OpenAPI springShopOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Conexão Estágios AI")
+                        .title("Gerenciador de Incidentes")
                         .description("API para testes de endpoints das entidades")
                         .version("1.0")
                         .license(new License()
-                                .name("Conexão Estágios AI © 2025 - Todos os direitos reservados."))
+                                .name("Dev Douglas Cândido © 2025 - Todos os direitos reservados."))
                         .contact(new Contact()
                                 .name("Suporte")
                                 .email("doug.candido2704@gmail.com"))

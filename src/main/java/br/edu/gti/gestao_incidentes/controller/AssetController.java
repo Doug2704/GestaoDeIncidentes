@@ -17,10 +17,10 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/areas/{areaId}/assets")
+@RequestMapping("api/v1/areas/{responsibleAreaId}/assets")
 @RequiredArgsConstructor
 public class AssetController {
-    private AssetService assetService;
+    private final AssetService assetService;
 
     @PostMapping("/create")
     public ResponseEntity<?> createAsset(@PathVariable Long responsibleAreaId, @RequestBody @Validated(OnCreate.class) AssetRequestDTO assetRequestDTO) {

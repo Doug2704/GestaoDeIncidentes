@@ -1,0 +1,3 @@
+//TODO verificar necessidade de retornar DTOs contendo nomes (ou Ids) de entidades ao inves da própria entidade exemplo: asset deve retornar nome do plan e não o plan inteiro
+//TODO continuar testes em plano de ação
+//TODO verificar dtos de requisição para receber ids e não entidades

@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("api/v1/steps/{stepId}/tasks")
 @RequiredArgsConstructor
 public class TaskController {
-    private TaskService taskService;
+    private final TaskService taskService;
 
     @PostMapping("/create")
     public ResponseEntity<?> createTask(@PathVariable Long stepId, @RequestBody @Validated(OnCreate.class) TaskRequestDTO taskRequestDTO) {
