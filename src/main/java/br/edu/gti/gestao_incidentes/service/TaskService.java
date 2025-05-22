@@ -14,17 +14,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@RequestMapping("api/v1/{stepId}/tasks")
 public class TaskService {
     private final TaskRepository taskRepository;
     private final StepRepository stepRepository;
     private final TaskMapper taskMapper;
 
-    public TaskResponseDTO create(Long stepId, @Validated(OnCreate.class) TaskRequestDTO taskRequestDTO) {
+    @PostMapping("/create")
+    public TaskResponseDTO create(@PathVariable Long stepId, @Validated(OnCreate.class) TaskRequestDTO taskRequestDTO) {
         try {
             Task task = taskMapper.toEntity(taskRequestDTO);
             Step step = stepRepository.findById(stepId).orElseThrow(() -> new EntityNotFoundException("Etapa não encontrada"));
@@ -36,7 +39,8 @@ public class TaskService {
         }
     }
 
-    public List<Task> findByStepId(Long stepId) {
+    @GetMapping("/find/all")
+    public List<Task> findByStepId(@PathVariable Long stepId) {
         return taskRepository.findByStep_Id(stepId);
     }
 
@@ -44,7 +48,8 @@ public class TaskService {
         return taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma tarefa com o id: " + id));
     }
 
-    public Task update(Long id, TaskRequestDTO taskRequestDTO) {
+    @PutMapping("/update/{id}")
+    public Task update(@PathVariable Long id, TaskRequestDTO taskRequestDTO) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma tarefa com o id: " + id));
         try {
             if (taskRequestDTO.action() != null) task.setAction(taskRequestDTO.action());
@@ -55,11 +60,13 @@ public class TaskService {
         }
     }
 
-    public void delete(Long id) {
+    @DeleteMapping("delete/{id}")
+    public void delete(@PathVariable Long id) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma tarefa com o id: " + id));
         taskRepository.delete(task);
     }
 
+    @PostMapping("/done/{id}")
     public void done(Long id) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma tarefa com o id: " + id));
         task.setDone(true);

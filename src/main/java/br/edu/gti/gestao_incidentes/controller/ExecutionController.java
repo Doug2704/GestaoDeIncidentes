@@ -63,7 +63,7 @@ public class ExecutionController {
         }
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteExecution(@PathVariable Long id) {
         try {
             executionService.delete(id);

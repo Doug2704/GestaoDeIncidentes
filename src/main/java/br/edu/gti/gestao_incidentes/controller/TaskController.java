@@ -55,7 +55,7 @@ public class TaskController {
         return ResponseEntity.ok(tasks);
     }
 
-    @PutMapping("update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<?> updateTask(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) TaskRequestDTO taskRequestDTO) {
         try {
             Task actiontask = taskService.update(id, taskRequestDTO);
@@ -65,7 +65,7 @@ public class TaskController {
         }
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteTask(@PathVariable Long id) {
         try {
             taskService.delete(id);
@@ -75,7 +75,7 @@ public class TaskController {
         }
     }
 
-    @PutMapping("done/{id}")
+    @PutMapping("/done/{id}")
     public ResponseEntity<?> done(@PathVariable Long id) {
         try {
             taskService.done(id);
