@@ -26,7 +26,7 @@ public class Step {
     @JsonIgnore
     @JoinColumn(name = "action_plan_id")
     private ActionPlan actionPlan;
-
+    //TODO alterar para actions
     @OneToMany(mappedBy = "step", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks;
 

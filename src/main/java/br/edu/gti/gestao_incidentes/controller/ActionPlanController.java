@@ -8,6 +8,7 @@ import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import br.edu.gti.gestao_incidentes.validation.OnUpdate;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("api/v1/areas/{areaId}/plans")
 @RequiredArgsConstructor
@@ -48,22 +50,21 @@ public class ActionPlanController {
         }
     }
 
-    //TODO verificar porque está retornando lista vazia
     @GetMapping("/find/all")
-    public ResponseEntity<List<PlanResponseDTO>> findByAreaId(Long areaId) {
+    public ResponseEntity<List<PlanResponseDTO>> findByAreaId(@PathVariable Long areaId) {
         List<PlanResponseDTO> plans = planService.findByAreaId(areaId);
         return ResponseEntity.ok(plans);
     }
-//
-//    @PutMapping("/update/{id}")
-//    public ResponseEntity<?> updatePlan(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) PlanRequestDTO planRequestDTO) {
-//        try {
-//            ActionPlan actionPlan = planService.update(id, planRequestDTO);
-//            return ResponseEntity.ok(actionPlan);
-//        } catch (EntityNotFoundException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//        }
-//    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updatePlan(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) PlanRequestDTO planRequestDTO) {
+        try {
+            ActionPlan actionPlan = planService.update(id, planRequestDTO);
+            return ResponseEntity.ok(actionPlan);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deletePlan(@PathVariable Long id) {

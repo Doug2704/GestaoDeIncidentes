@@ -1,14 +1,14 @@
 package br.edu.gti.gestao_incidentes.dto.requests;
 
-import br.edu.gti.gestao_incidentes.entities.Area;
-import br.edu.gti.gestao_incidentes.entities.Step;
 import br.edu.gti.gestao_incidentes.enums.Level;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-//TODO tratar área (buscar pelo id) e etapas
 public record PlanRequestDTO(
 
         @NotBlank(message = "Título é obrigatório", groups = OnCreate.class)
@@ -16,7 +16,7 @@ public record PlanRequestDTO(
         String title,
 
         @NotEmpty(message = "Pelo menos uma etapa deve ser informada", groups = OnCreate.class)
-        List<StepRequestDTO> stepRequestDTOS,
+        List<StepRequestDTO> stepRequestDTOs,
 
         @NotEmpty(message = "Pelo menos uma área afetada deve ser informada", groups = OnCreate.class)
         List<Long> affectedAreasIds,

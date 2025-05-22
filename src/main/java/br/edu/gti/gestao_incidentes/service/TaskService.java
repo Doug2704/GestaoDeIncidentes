@@ -2,6 +2,7 @@ package br.edu.gti.gestao_incidentes.service;
 
 import br.edu.gti.gestao_incidentes.dto.mappers.TaskMapper;
 import br.edu.gti.gestao_incidentes.dto.requests.TaskRequestDTO;
+import br.edu.gti.gestao_incidentes.dto.responses.TaskResponseDTO;
 import br.edu.gti.gestao_incidentes.entities.Step;
 import br.edu.gti.gestao_incidentes.entities.Task;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
@@ -21,14 +22,15 @@ import java.util.List;
 public class TaskService {
     private final TaskRepository taskRepository;
     private final StepRepository stepRepository;
+    private final TaskMapper taskMapper;
 
-    public Task create(Long stepId, @Validated(OnCreate.class) TaskRequestDTO taskRequestDTO) {
+    public TaskResponseDTO create(Long stepId, @Validated(OnCreate.class) TaskRequestDTO taskRequestDTO) {
         try {
-            Task task = TaskMapper.toEntity(taskRequestDTO);
+            Task task = taskMapper.toEntity(taskRequestDTO);
             Step step = stepRepository.findById(stepId).orElseThrow(() -> new EntityNotFoundException("Etapa não encontrada"));
             task.setStep(step);
 
-            return taskRepository.save(task);
+            return taskMapper.toDto(taskRepository.save(task));
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);
         }

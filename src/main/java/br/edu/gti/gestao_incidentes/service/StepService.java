@@ -2,8 +2,8 @@ package br.edu.gti.gestao_incidentes.service;
 
 import br.edu.gti.gestao_incidentes.dto.mappers.StepMapper;
 import br.edu.gti.gestao_incidentes.dto.requests.StepRequestDTO;
+import br.edu.gti.gestao_incidentes.dto.responses.StepResponseDTO;
 import br.edu.gti.gestao_incidentes.entities.ActionPlan;
-import br.edu.gti.gestao_incidentes.entities.Area;
 import br.edu.gti.gestao_incidentes.entities.Step;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.ActionPlanRepository;
@@ -18,23 +18,23 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
+//TODO verificar updates
 @Service
 @RequiredArgsConstructor
 public class StepService {
     private final StepRepository stepRepository;
     private final ActionPlanRepository planRepository;
-    private final AreaRepository areaRepository;
+    private final StepMapper stepMapper;
 
-    public Step create(Long planId, @Validated(OnCreate.class) StepRequestDTO stepRequestDTO) {
+    public StepResponseDTO create(Long planId, @Validated(OnCreate.class) StepRequestDTO stepRequestDTO) {
         try {
-            Step step = StepMapper.toEntity(stepRequestDTO);
+            Step step = stepMapper.toEntity(stepRequestDTO);
             ActionPlan plan = planRepository.findById(planId)
                     .orElseThrow(() -> new EntityNotFoundException("Plano de ação não encontrado"));
             step.setActionPlan(plan);
-            Area responsibleArea = areaRepository.findById(stepRequestDTO.responsibleAreaId())
-                    .orElseThrow(() -> new EntityNotFoundException("Área não encontrada"));
-            step.setResponsibleArea(responsibleArea);
-            return stepRepository.save(step);
+
+            return stepMapper.toDto(stepRepository.save(step));
+
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);
         }
@@ -51,7 +51,7 @@ public class StepService {
     public Step update(Long id, StepRequestDTO stepRequestDTO) {
         Step step = stepRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma etapa com o id: " + id));
         try {
-            StepMapper.applyChanges(stepRequestDTO, step);
+            stepMapper.applyChanges(stepRequestDTO, step);
             return stepRepository.save(step);
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);

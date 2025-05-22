@@ -1,6 +1,7 @@
 package br.edu.gti.gestao_incidentes.controller;
 
 import br.edu.gti.gestao_incidentes.dto.requests.TaskRequestDTO;
+import br.edu.gti.gestao_incidentes.dto.responses.TaskResponseDTO;
 import br.edu.gti.gestao_incidentes.entities.Task;
 import br.edu.gti.gestao_incidentes.service.TaskService;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
@@ -25,8 +26,8 @@ public class TaskController {
     @PostMapping("/create")
     public ResponseEntity<?> createTask(@PathVariable Long stepId, @RequestBody @Validated(OnCreate.class) TaskRequestDTO taskRequestDTO) {
         try {
-            Task savedtask = taskService.create(stepId, taskRequestDTO);
-            URI local = URI.create("/" + savedtask.getId());
+            TaskResponseDTO savedtask = taskService.create(stepId, taskRequestDTO);
+            URI local = URI.create("/" + savedtask.id());
             return ResponseEntity.created(local).body(savedtask);
 
         } catch (DataIntegrityViolationException e) {
@@ -74,7 +75,7 @@ public class TaskController {
         }
     }
 
-    @PutMapping
+    @PutMapping("done/{id}")
     public ResponseEntity<?> done(@PathVariable Long id) {
         try {
             taskService.done(id);

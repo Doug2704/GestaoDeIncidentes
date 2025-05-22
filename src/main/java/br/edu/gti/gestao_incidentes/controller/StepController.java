@@ -1,6 +1,7 @@
 package br.edu.gti.gestao_incidentes.controller;
 
 import br.edu.gti.gestao_incidentes.dto.requests.StepRequestDTO;
+import br.edu.gti.gestao_incidentes.dto.responses.StepResponseDTO;
 import br.edu.gti.gestao_incidentes.entities.Step;
 import br.edu.gti.gestao_incidentes.service.StepService;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
@@ -25,8 +26,8 @@ public class StepController {
     @PostMapping("/create")
     public ResponseEntity<?> createStep(@PathVariable Long planId, @RequestBody @Validated(OnCreate.class) StepRequestDTO stepRequestDTO) {
         try {
-            Step savedStep = stepService.create(planId, stepRequestDTO);
-            URI local = URI.create("/" + savedStep.getId());
+            StepResponseDTO savedStep = stepService.create(planId, stepRequestDTO);
+            URI local = URI.create("/" + savedStep.id());
             return ResponseEntity.created(local).body(savedStep);
 
         } catch (DataIntegrityViolationException e) {

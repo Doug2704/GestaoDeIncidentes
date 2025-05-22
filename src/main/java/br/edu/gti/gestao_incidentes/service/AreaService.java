@@ -1,6 +1,7 @@
 package br.edu.gti.gestao_incidentes.service;
 
 import br.edu.gti.gestao_incidentes.dto.mappers.AreaMapper;
+import br.edu.gti.gestao_incidentes.dto.mappers.AreaMapper;
 import br.edu.gti.gestao_incidentes.dto.requests.AreaRequestDTO;
 import br.edu.gti.gestao_incidentes.entities.Area;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
@@ -18,10 +19,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AreaService {
     private final AreaRepository areaRepository;
+    private final AreaMapper areaMapper;
 
     public Area create(@Validated(OnCreate.class) AreaRequestDTO areaRequestDTO) {
         try {
-            Area area = AreaMapper.toEntity(areaRequestDTO);
+            Area area = areaMapper.toEntity(areaRequestDTO);
             return areaRepository.save(area);
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);
@@ -39,7 +41,7 @@ public class AreaService {
     public Area update(Long id, AreaRequestDTO areaRequestDTO) {
         Area area = areaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma área com o id: " + id));
         try {
-            AreaMapper.applyChanges(areaRequestDTO, area);
+            areaMapper.applyChanges(areaRequestDTO, area);
             return areaRepository.save(area);
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);

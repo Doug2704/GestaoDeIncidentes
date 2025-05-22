@@ -2,6 +2,7 @@ package br.edu.gti.gestao_incidentes.service;
 
 import br.edu.gti.gestao_incidentes.entities.user.User;
 import br.edu.gti.gestao_incidentes.entities.user.UserAuthenticated;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,8 +18,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class JwtService {
     private final JwtEncoder encoder;
-    private final JwtDecoder jwtDecoder;
 
+    //TODO implementar função de deslogar
     public String generateToken(Authentication authentication) {
         UserAuthenticated userAuth = (UserAuthenticated) authentication.getPrincipal();
         User user = userAuth.getUser();
@@ -51,4 +52,15 @@ public class JwtService {
         }
         return null;
     }
+
+    public String getTokenFromRequest(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
+        }
+
+        return null;
+    }
+
 }

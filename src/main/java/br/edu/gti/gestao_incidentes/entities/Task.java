@@ -1,5 +1,6 @@
 package br.edu.gti.gestao_incidentes.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "step_id")
+    @JsonIgnore
     private Step step;
 
     private boolean isDone;

@@ -1,8 +1,11 @@
 package br.edu.gti.gestao_incidentes.config;
 
+import br.edu.gti.gestao_incidentes.service.JwtService;
+import br.edu.gti.gestao_incidentes.service.RevokedTokenService;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +21,7 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.security.interfaces.RSAPrivateKey;
@@ -36,8 +40,14 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public JwtRevocationFilter jwtRevocationFilter(RevokedTokenService revokedTokenService, JwtService jwtService) {
+        return new JwtRevocationFilter(revokedTokenService, jwtService);
+    }
+
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http, JwtRevocationFilter jwtRevocationFilter) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
 
@@ -130,11 +140,11 @@ public class SecurityConfig {
                         // catch-all
                         .anyRequest().authenticated()
                 )
+                .addFilterBefore(jwtRevocationFilter, BearerTokenAuthenticationFilter.class)
                 .oauth2ResourceServer(conf -> conf.jwt(Customizer.withDefaults()));
 
         return http.build();
     }
-
 
 
     @Bean

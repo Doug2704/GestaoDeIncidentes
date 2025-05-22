@@ -21,10 +21,11 @@ import java.util.List;
 public class AssetService {
     private final AssetRepository assetRepository;
     private final AreaRepository areaRepository;
+    private final AssetMapper assetMapper;
 
     public Asset create(Long responsibleAreaId, @Validated(OnCreate.class) AssetRequestDTO assetRequestDTO) {
         try {
-            Asset asset = AssetMapper.toEntity(assetRequestDTO);
+            Asset asset = assetMapper.toEntity(assetRequestDTO);
             Area responsibleArea = areaRepository.findById(responsibleAreaId)
                     .orElseThrow(() -> new EntityNotFoundException("Área não encontrada"));
             asset.setResponsibleArea(responsibleArea);

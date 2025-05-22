@@ -24,28 +24,29 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final AreaRepository areaRepository;
+    private final UserMapper userMapper;
 
     //TODO tratar corretamente exceção de unicidade
     public UserResponseDTO create(Long actuationAreaId, @Validated(OnCreate.class) UserRequestDTO userRequestDTO) {
         try {
-            User user = UserMapper.toEntity(userRequestDTO);
+            User user = userMapper.toEntity(userRequestDTO);
             Area actuationArea = areaRepository.findById(actuationAreaId)
                     .orElseThrow(() -> new EntityNotFoundException("Área não encontrada"));
             user.setActuationArea(actuationArea);
             user.setPassword(passwordEncoder.encode(userRequestDTO.password()));
-            return UserMapper.toDto(userRepository.save(user));
+            return userMapper.toDto(userRepository.save(user));
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);
         }
     }
 
     public List<UserResponseDTO> findByAreaId(Long actuationAreaId) {
-        return userRepository.findByActuationArea_Id(actuationAreaId).stream().map(UserMapper::toDto).toList();
+        return userRepository.findByActuationArea_Id(actuationAreaId).stream().map(userMapper::toDto).toList();
     }
 
     public UserResponseDTO findById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhum usuário com id: " + id));
-        return UserMapper.toDto(user);
+        return userMapper.toDto(user);
     }
 
     //TODO implementar alteração de área de atuação
@@ -54,9 +55,9 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("nenhum usuário com id: " + id));
         try {
             if (userRequestDTO.password() != null) user.setPassword(passwordEncoder.encode(userRequestDTO.password()));
-            UserMapper.applyChanges(userRequestDTO, user);
+            userMapper.applyChanges(userRequestDTO, user);
 
-            return UserMapper.toDto(userRepository.save(user));
+            return userMapper.toDto(userRepository.save(user));
 
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);

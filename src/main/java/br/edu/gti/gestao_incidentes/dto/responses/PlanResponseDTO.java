@@ -9,13 +9,13 @@ public record PlanResponseDTO(
         Long id,
         String title,
         String incidentDescription,
-        List<String> steps,
         String responsibleArea,
         List<String> affectedAreas,
         Level urgencyLevel,
         Level impactLevel,
         String planMaxDuration,
-        LocalDateTime creationDate
+        LocalDateTime creationDate,
+        List<StepResponseDTO> stepResponseDTOs
 
 ) {
 }
