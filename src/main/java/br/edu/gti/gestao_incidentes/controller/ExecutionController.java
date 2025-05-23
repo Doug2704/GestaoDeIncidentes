@@ -18,10 +18,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ExecutionController {
     private final ExecutionService executionService;
-    private final Long userId = JwtService.getUserIdFromToken();
 
     @PostMapping("/start")
     public ResponseEntity<?> startExecution(@PathVariable Long planId) {
+        Long userId = JwtService.getUserIdFromToken();
         try {
             Execution savedExecution = executionService.start(planId, userId);
             URI local = URI.create("/" + savedExecution.getId());
@@ -54,7 +54,7 @@ public class ExecutionController {
 
     @PutMapping("/finish/{id}")
     public ResponseEntity<?> finishExecution(@PathVariable Long executionId) {
-
+        Long userId = JwtService.getUserIdFromToken();
         try {
             Execution updatedexecution = executionService.finish(executionId, userId);
             return ResponseEntity.ok(updatedexecution);

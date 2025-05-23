@@ -1,9 +1,9 @@
 package br.edu.gti.gestao_incidentes.controller;
 
-import br.edu.gti.gestao_incidentes.dto.requests.TaskRequestDTO;
-import br.edu.gti.gestao_incidentes.dto.responses.TaskResponseDTO;
-import br.edu.gti.gestao_incidentes.entities.Task;
-import br.edu.gti.gestao_incidentes.service.TaskService;
+import br.edu.gti.gestao_incidentes.dto.requests.ActionRequestDTO;
+import br.edu.gti.gestao_incidentes.dto.responses.ActionResponseDTO;
+import br.edu.gti.gestao_incidentes.entities.Action;
+import br.edu.gti.gestao_incidentes.service.ActionService;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import br.edu.gti.gestao_incidentes.validation.OnUpdate;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,15 +20,16 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/steps/{stepId}/tasks")
 @RequiredArgsConstructor
-public class TaskController {
-    private final TaskService taskService;
+public class ActionController {
+    private final ActionService actionService;
 
+    //TODO verificar os paths em acordo com o padrão http
     @PostMapping("/create")
-    public ResponseEntity<?> createTask(@PathVariable Long stepId, @RequestBody @Validated(OnCreate.class) TaskRequestDTO taskRequestDTO) {
+    public ResponseEntity<?> createTask(@PathVariable Long stepId, @RequestBody @Validated(OnCreate.class) ActionRequestDTO actionRequestDTO) {
         try {
-            TaskResponseDTO savedtask = taskService.create(stepId, taskRequestDTO);
-            URI local = URI.create("/" + savedtask.id());
-            return ResponseEntity.created(local).body(savedtask);
+            ActionResponseDTO savedAction = actionService.create(stepId, actionRequestDTO);
+            URI local = URI.create("/" + savedAction.id());
+            return ResponseEntity.created(local).body(savedAction);
 
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
@@ -39,10 +40,10 @@ public class TaskController {
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long stepId) {
+    public ResponseEntity<?> findById(@PathVariable Long id) {
         try {
-            Task foundtask = taskService.findById(stepId);
-            return ResponseEntity.ok(foundtask);
+            Action foundAction = actionService.findById(id);
+            return ResponseEntity.ok(foundAction);
 
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -50,26 +51,26 @@ public class TaskController {
     }
 
     @GetMapping("/find/all")
-    public ResponseEntity<List<Task>> findByPlanId(@PathVariable Long planId) {
-        List<Task> tasks = taskService.findByStepId(planId);
-        return ResponseEntity.ok(tasks);
+    public ResponseEntity<List<Action>> findByPlanId(@PathVariable Long stepId) {
+        List<Action> actions = actionService.findByStepId(stepId);
+        return ResponseEntity.ok(actions);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateTask(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) TaskRequestDTO taskRequestDTO) {
+    public ResponseEntity<?> updateTask(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) ActionRequestDTO actionRequestDTO) {
         try {
-            Task actiontask = taskService.update(id, taskRequestDTO);
-            return ResponseEntity.ok(actiontask);
+            Action action = actionService.update(id, actionRequestDTO);
+            return ResponseEntity.ok(action);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteTask(@PathVariable Long id) {
+    public ResponseEntity<?> deleteAction(@PathVariable Long id) {
         try {
-            taskService.delete(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Tarefa excluída");
+            actionService.delete(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Ação excluída");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
@@ -78,8 +79,8 @@ public class TaskController {
     @PutMapping("/done/{id}")
     public ResponseEntity<?> done(@PathVariable Long id) {
         try {
-            taskService.done(id);
-            return ResponseEntity.ok().body("tarefa concluída");
+            actionService.done(id);
+            return ResponseEntity.ok().body("Ação concluída");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

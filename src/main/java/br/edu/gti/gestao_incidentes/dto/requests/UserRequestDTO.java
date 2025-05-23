@@ -1,8 +1,9 @@
 package br.edu.gti.gestao_incidentes.dto.requests;
 
-import br.edu.gti.gestao_incidentes.entities.Area;
 import br.edu.gti.gestao_incidentes.enums.Profile;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
+import br.edu.gti.gestao_incidentes.validation.OnUpdate;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -18,6 +19,7 @@ public record UserRequestDTO(
         @Size(min = 2, message = "Nome de usuário precisa ter, pelo menos, {min} caracteres.")
         String username,
 
+        @Email(message = "Formato de e-mail inválido. Exemplo: usuario@dominio.com", groups = {OnCreate.class, OnUpdate.class})
         @NotBlank(message = "Email é obrigatório", groups = OnCreate.class)
         String email,
 

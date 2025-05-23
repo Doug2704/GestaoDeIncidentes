@@ -24,9 +24,9 @@ public class AreaController {
 
     //TODO verificar exceções
     @PostMapping("/create")
-    public ResponseEntity<?> createArea(@RequestBody @Validated(OnCreate.class) AreaRequestDTO AreaRequestDTO) {
+    public ResponseEntity<?> createArea(@RequestBody @Validated(OnCreate.class) AreaRequestDTO areaRequestDTO) {
         try {
-            Area savedArea = areaService.create(AreaRequestDTO);
+            Area savedArea = areaService.create(areaRequestDTO);
             URI local = URI.create("/" + savedArea.getId());
             return ResponseEntity.created(local).body(savedArea);
 

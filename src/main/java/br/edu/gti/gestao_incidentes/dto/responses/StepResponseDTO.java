@@ -9,6 +9,6 @@ public record StepResponseDTO(
         String title,
         String responsibleArea,
         Status status,
-        List<TaskResponseDTO> taskResponseDTOs
+        List<ActionResponseDTO> actionResponseDTOs
 ) {
 }

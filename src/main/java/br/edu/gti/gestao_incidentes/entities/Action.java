@@ -8,15 +8,15 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Task {
+public class Action {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_task")
+    @Column(name = "id_action")
     private Long id;
 
     @Column(name = "title")
-    private String action;
+    private String title;
 
     @ManyToOne
     @JoinColumn(name = "step_id")

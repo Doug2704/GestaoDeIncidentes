@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 public class JwtService {
     private final JwtEncoder encoder;
 
-    //TODO implementar função de deslogar
     public String generateToken(Authentication authentication) {
         UserAuthenticated userAuth = (UserAuthenticated) authentication.getPrincipal();
         User user = userAuth.getUser();

@@ -9,6 +9,7 @@ import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.AreaRepository;
 import br.edu.gti.gestao_incidentes.repository.UserRepository;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
+import br.edu.gti.gestao_incidentes.validation.OnUpdate;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -50,7 +51,7 @@ public class UserService {
     }
 
     //TODO implementar alteração de área de atuação
-    public UserResponseDTO update(Long id, UserRequestDTO userRequestDTO) {
+    public UserResponseDTO update(Long id, @Validated(OnUpdate.class) UserRequestDTO userRequestDTO) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("nenhum usuário com id: " + id));
         try {

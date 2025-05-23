@@ -1,8 +1,8 @@
 package br.edu.gti.gestao_incidentes.dto.responses;
 
-public record TaskResponseDTO(
+public record ActionResponseDTO(
         Long id,
-        String action,
+        String title,
         boolean isDone
 ) {
 }

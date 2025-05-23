@@ -16,8 +16,8 @@ public record StepRequestDTO(
         @NotBlank(message = "Título é obrigatório.", groups = OnCreate.class)
         String title,
 
-        @NotEmpty(message = "Pelo menos uma tarefa deve ser informada", groups = OnCreate.class)
-        List<TaskRequestDTO> taskRequestDTOs,
+        @NotEmpty(message = "Pelo menos uma ação deve ser informada", groups = OnCreate.class)
+        List<ActionRequestDTO> actionRequestDTOS,
 
         @NotNull(message = "ID da área responsável é obrigatório", groups = OnCreate.class)
         Long responsibleAreaId,

@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StepMapper {
     private final AreaService areaService;
-    public final TaskMapper taskMapper;
+    public final ActionMapper actionMapper;
 
     public StepResponseDTO toDto(Step step) {
         if (step == null) return null;
@@ -25,7 +25,7 @@ public class StepMapper {
                 step.getTitle(),
                 step.getResponsibleArea().getName(),
                 step.getStatus(),
-                step.getTasks().stream().map(taskMapper::toDto).toList()
+                step.getActions().stream().map(actionMapper::toDto).toList()
         );
     }
 
@@ -36,15 +36,15 @@ public class StepMapper {
         step.setTitle(stepRequestDTO.title());
         step.setStatus(stepRequestDTO.status());
         step.setResponsibleArea(area);
-        step.setTasks(taskMapper.toEntityList(step, stepRequestDTO.taskRequestDTOs()));
+        step.setActions(actionMapper.toEntityList(step, stepRequestDTO.actionRequestDTOS()));
 
         return step;
     }
 
     public void applyChanges(StepRequestDTO stepRequestDTO, Step step) {
         if (stepRequestDTO.title() != null) step.setTitle(stepRequestDTO.title());
-        if (stepRequestDTO.taskRequestDTOs() != null)
-            step.setTasks(taskMapper.toEntityList(step, stepRequestDTO.taskRequestDTOs()));
+        if (stepRequestDTO.actionRequestDTOS() != null)
+            step.setActions(actionMapper.toEntityList(step, stepRequestDTO.actionRequestDTOS()));
         if (stepRequestDTO.status() != null) step.setStatus(stepRequestDTO.status());
     }
 
