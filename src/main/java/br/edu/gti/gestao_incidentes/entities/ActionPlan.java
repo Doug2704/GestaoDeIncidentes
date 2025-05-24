@@ -20,7 +20,7 @@ public class ActionPlan {
     @Column(name = "id_action_plan")
     private Long id;
 
-    @Column(nullable = false, name = "title")
+    @Column(nullable = false, name = "title", unique = true)
     private String title;
 
     @OneToMany(mappedBy = "actionPlan", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -38,7 +38,7 @@ public class ActionPlan {
     )
     private List<Area> affectedAreas;
 
-    @Column(nullable = false, name = "incident_description")
+    @Column(nullable = false, name = "incident_description", unique = true)
     private String incidentDescription;
 
     @Enumerated(EnumType.STRING)

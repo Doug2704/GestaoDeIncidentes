@@ -19,7 +19,7 @@ public class Step {
     @Column(name = "id_step")
     private Long id;
 
-    @Column(nullable = false, name = "title")
+    @Column(nullable = false, name = "title", unique = true)
     String title;
 
     @ManyToOne

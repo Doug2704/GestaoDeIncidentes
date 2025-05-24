@@ -15,7 +15,7 @@ public class Action {
     @Column(name = "id_action")
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "title", unique = true)
     private String title;
 
     @ManyToOne

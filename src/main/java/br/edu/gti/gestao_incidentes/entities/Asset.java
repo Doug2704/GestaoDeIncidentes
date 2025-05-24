@@ -18,7 +18,7 @@ public class Asset {
     @Column(name = "id_asset")
     private Long id;
 
-    @Column(nullable = false, name = "name")
+    @Column(unique = true, nullable = false, name = "name")
     private String name;
 
     @ManyToOne
