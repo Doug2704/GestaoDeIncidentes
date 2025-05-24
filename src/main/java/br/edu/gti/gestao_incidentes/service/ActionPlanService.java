@@ -42,6 +42,9 @@ public class ActionPlanService {
     }
 
     public List<PlanResponseDTO> findByAreaId(Long areaId) {
+        if (!areaRepository.existsById(areaId)) {
+            throw new NoRegisterException(areaId);
+        }
         return planRepository.findByResponsibleArea_Id(areaId).stream().map(planMapper::toDto).toList();
     }
 

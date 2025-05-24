@@ -39,6 +39,9 @@ public class ActionService {
     }
 
     public List<Action> findByStepId(Long stepId) {
+        if (!stepRepository.existsById(stepId)) {
+            throw new NoRegisterException(stepId);
+        }
         return actionRepository.findByStep_Id(stepId);
     }
 

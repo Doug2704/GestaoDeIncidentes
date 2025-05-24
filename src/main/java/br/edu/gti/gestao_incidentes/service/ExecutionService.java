@@ -41,6 +41,9 @@ public class ExecutionService {
     }
 
     public List<Execution> findByActionPlan(Long planId) {
+        if (!planRepository.existsById(planId)) {
+            throw new NoRegisterException(planId);
+        }
         return executionRepository.findByActionPlan_id(planId);
     }
 

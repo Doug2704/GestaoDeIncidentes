@@ -42,6 +42,9 @@ public class UserService {
     }
 
     public List<UserResponseDTO> findByAreaId(Long actuationAreaId) {
+        if (!areaRepository.existsById(actuationAreaId)) {
+            throw new NoRegisterException(actuationAreaId);
+        }
         return userRepository.findByActuationArea_Id(actuationAreaId).stream().map(userMapper::toDto).toList();
     }
 

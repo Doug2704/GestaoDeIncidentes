@@ -37,6 +37,9 @@ public class AssetService {
     }
 
     public List<Asset> findByAreaId(Long responsibleAreaId) {
+        if (!areaRepository.existsById(responsibleAreaId)){
+            throw new NoRegisterException(responsibleAreaId);
+        }
         return assetRepository.findByResponsibleArea_Id(responsibleAreaId);
     }
 

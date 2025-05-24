@@ -40,6 +40,10 @@ public class StepService {
     }
 
     public List<Step> findByPlanId(Long planId) {
+
+        if (!planRepository.existsById(planId)){
+            throw new NoRegisterException(planId);
+        }
         return stepRepository.findByActionPlan_Id(planId);
     }
 
