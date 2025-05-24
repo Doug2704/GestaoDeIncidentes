@@ -1,16 +1,15 @@
 package br.edu.gti.gestao_incidentes.service;
 
 import br.edu.gti.gestao_incidentes.dto.mappers.PlanMapper;
-import br.edu.gti.gestao_incidentes.dto.mappers.StepMapper;
 import br.edu.gti.gestao_incidentes.dto.requests.PlanRequestDTO;
 import br.edu.gti.gestao_incidentes.dto.responses.PlanResponseDTO;
 import br.edu.gti.gestao_incidentes.entities.ActionPlan;
 import br.edu.gti.gestao_incidentes.entities.Area;
+import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.ActionPlanRepository;
 import br.edu.gti.gestao_incidentes.repository.AreaRepository;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -31,7 +30,7 @@ public class ActionPlanService {
         try {
             ActionPlan plan = planMapper.toEntity(planRequestDTO);
             Area responsibleArea = areaRepository.findById(responsibleAreaId)
-                    .orElseThrow(() -> new EntityNotFoundException("Área não encontrada"));
+                    .orElseThrow(() -> new NoRegisterException(responsibleAreaId));
             plan.setResponsibleArea(responsibleArea);
 
             return planMapper.toDto(planRepository.save(plan));
@@ -47,12 +46,12 @@ public class ActionPlanService {
     }
 
     public PlanResponseDTO findById(Long id) {
-        ActionPlan plan = planRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhum plano de ação com com o id: " + id));
+        ActionPlan plan = planRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
         return planMapper.toDto(plan);
     }
 
     public ActionPlan update(Long id, PlanRequestDTO planRequestDTO) {
-        ActionPlan plan = planRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhum plano de ação com com o id: " + id));
+        ActionPlan plan = planRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
         try {
             planMapper.applyChanges(planRequestDTO, plan);
             return planRepository.save(plan);
@@ -63,7 +62,7 @@ public class ActionPlanService {
     }
 
     public void delete(Long id) {
-        ActionPlan plan = planRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhum plano de ação com com o id: " + id));
+        ActionPlan plan = planRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
         planRepository.delete(plan);
     }
 }

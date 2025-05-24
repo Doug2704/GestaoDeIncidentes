@@ -9,7 +9,7 @@ import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.ActionPlanRepository;
 import br.edu.gti.gestao_incidentes.repository.ExecutionRepository;
 import br.edu.gti.gestao_incidentes.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class ExecutionService {
 
     public Execution start(Long actionPlanId, Long requesterId) {
         Execution execution = new Execution();
-        ActionPlan actionPlan = planRepository.findById(actionPlanId).orElseThrow(() -> new EntityNotFoundException("Plano de Ação não encontrado."));
+        ActionPlan actionPlan = planRepository.findById(actionPlanId).orElseThrow(() -> new NoRegisterException(actionPlanId));
         startSteps(actionPlan);
         try {
             User requester = userRepository.findById(requesterId).get();
@@ -45,11 +45,11 @@ public class ExecutionService {
     }
 
     public Execution findById(Long id) {
-        return executionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma execução com o id: " + id));
+        return executionRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
     }
 
     public Execution finish(Long executionId, Long requesterId) {
-        Execution execution = executionRepository.findById(executionId).orElseThrow(() -> new EntityNotFoundException("nenhuma execução com o id: " + executionId));
+        Execution execution = executionRepository.findById(executionId).orElseThrow(() -> new NoRegisterException(executionId));
         try {
             validateAllStepsFinished(execution.getActionPlan());
 
@@ -65,7 +65,7 @@ public class ExecutionService {
     }
 
     public void delete(Long id) {
-        Execution execution = executionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma execução com o id: " + id));
+        Execution execution = executionRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
         executionRepository.delete(execution);
     }
 

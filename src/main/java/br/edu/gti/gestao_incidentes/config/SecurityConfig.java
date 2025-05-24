@@ -58,11 +58,11 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-//
-//                        // view access (todos)
-//                        .requestMatchers(
-//                                "/api/v1/*/find/**", "/api/v1/*/*/*/find/**"
-//                        ).permitAll()
+
+                        // view access (todos)
+                        .requestMatchers(
+                                "/api/v1/*/find/**", "/api/v1/*/*/*/find/**"
+                        ).hasAnyAuthority("SCOPE_OPERATOR", "SCOPE_MANAGER", "SCOPE_ADMIN")
 
                         // ===== USERS =====
                         // Criar usuário (admin)

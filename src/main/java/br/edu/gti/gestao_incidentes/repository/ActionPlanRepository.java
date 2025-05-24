@@ -9,5 +9,4 @@ import java.util.List;
 @Repository
 public interface ActionPlanRepository extends JpaRepository<ActionPlan, Long> {
     List<ActionPlan> findByResponsibleArea_Id(Long areaId);
-
 }

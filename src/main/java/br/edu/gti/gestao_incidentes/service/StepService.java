@@ -5,12 +5,11 @@ import br.edu.gti.gestao_incidentes.dto.requests.StepRequestDTO;
 import br.edu.gti.gestao_incidentes.dto.responses.StepResponseDTO;
 import br.edu.gti.gestao_incidentes.entities.ActionPlan;
 import br.edu.gti.gestao_incidentes.entities.Step;
+import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.ActionPlanRepository;
-import br.edu.gti.gestao_incidentes.repository.AreaRepository;
 import br.edu.gti.gestao_incidentes.repository.StepRepository;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,7 @@ public class StepService {
         try {
             Step step = stepMapper.toEntity(stepRequestDTO);
             ActionPlan plan = planRepository.findById(planId)
-                    .orElseThrow(() -> new EntityNotFoundException("Plano de ação não encontrado"));
+                    .orElseThrow(() -> new NoRegisterException(planId));
             step.setActionPlan(plan);
 
             return stepMapper.toDto(stepRepository.save(step));
@@ -45,11 +44,11 @@ public class StepService {
     }
 
     public Step findById(Long id) {
-        return stepRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma etapa com o id: " + id));
+        return stepRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
     }
 
     public Step update(Long id, StepRequestDTO stepRequestDTO) {
-        Step step = stepRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma etapa com o id: " + id));
+        Step step = stepRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
         try {
             stepMapper.applyChanges(stepRequestDTO, step);
             return stepRepository.save(step);
@@ -59,7 +58,7 @@ public class StepService {
     }
 
     public void delete(Long id) {
-        Step step = stepRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma etapa com o id: " + id));
+        Step step = stepRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
         stepRepository.delete(step);
     }
 }

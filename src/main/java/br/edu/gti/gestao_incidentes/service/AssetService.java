@@ -8,7 +8,7 @@ import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.AreaRepository;
 import br.edu.gti.gestao_incidentes.repository.AssetRepository;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
-import jakarta.persistence.EntityNotFoundException;
+import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class AssetService {
         try {
             Asset asset = assetMapper.toEntity(assetRequestDTO);
             Area responsibleArea = areaRepository.findById(responsibleAreaId)
-                    .orElseThrow(() -> new EntityNotFoundException("Área não encontrada"));
+                    .orElseThrow(() -> new NoRegisterException(responsibleAreaId));
             asset.setResponsibleArea(responsibleArea);
 
             return assetRepository.save(asset);
@@ -41,11 +41,11 @@ public class AssetService {
     }
 
     public Asset findById(Long id) {
-        return assetRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhum ativo com o id: " + id));
+        return assetRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
     }
 
     public Asset update(Long id, AssetRequestDTO assetRequestDTO) {
-        Asset asset = assetRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhum ativo com o id: " + id));
+        Asset asset = assetRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
         try {
             if (assetRequestDTO.name() != null) asset.setName(assetRequestDTO.name());
             return assetRepository.save(asset);
@@ -55,7 +55,7 @@ public class AssetService {
     }
 
     public void delete(Long id) {
-        Asset asset = assetRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhum ativo com o id: " + id));
+        Asset asset = assetRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
         assetRepository.delete(asset);
     }
 }

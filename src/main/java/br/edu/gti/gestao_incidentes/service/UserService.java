@@ -10,7 +10,7 @@ import br.edu.gti.gestao_incidentes.repository.AreaRepository;
 import br.edu.gti.gestao_incidentes.repository.UserRepository;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import br.edu.gti.gestao_incidentes.validation.OnUpdate;
-import jakarta.persistence.EntityNotFoundException;
+import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,7 +32,7 @@ public class UserService {
         try {
             User user = userMapper.toEntity(userRequestDTO);
             Area actuationArea = areaRepository.findById(actuationAreaId)
-                    .orElseThrow(() -> new EntityNotFoundException("Área não encontrada"));
+                    .orElseThrow(() -> new NoRegisterException(actuationAreaId));
             user.setActuationArea(actuationArea);
             user.setPassword(passwordEncoder.encode(userRequestDTO.password()));
             return userMapper.toDto(userRepository.save(user));
@@ -46,14 +46,14 @@ public class UserService {
     }
 
     public UserResponseDTO findById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhum usuário com id: " + id));
+        User user = userRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
         return userMapper.toDto(user);
     }
 
     //TODO implementar alteração de área de atuação
     public UserResponseDTO update(Long id, @Validated(OnUpdate.class) UserRequestDTO userRequestDTO) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("nenhum usuário com id: " + id));
+                .orElseThrow(() -> new NoRegisterException(id));
         try {
             if (userRequestDTO.password() != null) user.setPassword(passwordEncoder.encode(userRequestDTO.password()));
             userMapper.applyChanges(userRequestDTO, user);
@@ -67,9 +67,8 @@ public class UserService {
 
     public void delete(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new EntityNotFoundException("nenhum usuário com id: " + id);
+            throw new NoRegisterException(id);
         }
         userRepository.deleteById(id);
     }
-
 }

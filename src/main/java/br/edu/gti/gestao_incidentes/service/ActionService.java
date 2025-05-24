@@ -5,11 +5,11 @@ import br.edu.gti.gestao_incidentes.dto.requests.ActionRequestDTO;
 import br.edu.gti.gestao_incidentes.dto.responses.ActionResponseDTO;
 import br.edu.gti.gestao_incidentes.entities.Action;
 import br.edu.gti.gestao_incidentes.entities.Step;
+import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.ActionRepository;
 import br.edu.gti.gestao_incidentes.repository.StepRepository;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class ActionService {
     public ActionResponseDTO create(Long stepId, @Validated(OnCreate.class) ActionRequestDTO actionRequestDTO) {
         try {
             Action action = actionMapper.toEntity(actionRequestDTO);
-            Step step = stepRepository.findById(stepId).orElseThrow(() -> new EntityNotFoundException("Etapa não encontrada"));
+            Step step = stepRepository.findById(stepId).orElseThrow(() -> new NoRegisterException(stepId));
             action.setStep(step);
 
             return actionMapper.toDto(actionRepository.save(action));
@@ -43,11 +43,11 @@ public class ActionService {
     }
 
     public Action findById(Long id) {
-        return actionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma ação com o id: " + id));
+        return actionRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
     }
 
     public Action update(Long id, ActionRequestDTO actionRequestDTO) {
-        Action action = actionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma ação com o id: " + id));
+        Action action = actionRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
         try {
             if (actionRequestDTO.title() != null) action.setTitle(actionRequestDTO.title());
 
@@ -58,12 +58,12 @@ public class ActionService {
     }
 
     public void delete(@PathVariable Long id) {
-        Action action = actionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma ação com o id: " + id));
+        Action action = actionRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
         actionRepository.delete(action);
     }
 
     public void done(Long id) {
-        Action action = actionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("nenhuma ação com o id: " + id));
+        Action action = actionRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
         action.setDone(true);
     }
 }
