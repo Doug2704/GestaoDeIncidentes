@@ -9,10 +9,12 @@ import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.ActionPlanRepository;
 import br.edu.gti.gestao_incidentes.repository.AreaRepository;
+import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class ActionPlanService {
     private final AreaRepository areaRepository;
     private final PlanMapper planMapper;
 
-    public PlanResponseDTO create(Long responsibleAreaId, PlanRequestDTO planRequestDTO) {
+    public PlanResponseDTO create(Long responsibleAreaId, @Validated(OnCreate.class) PlanRequestDTO planRequestDTO) {
         try {
             ActionPlan plan = planMapper.toEntity(planRequestDTO);
             Area responsibleArea = areaRepository.findById(responsibleAreaId)

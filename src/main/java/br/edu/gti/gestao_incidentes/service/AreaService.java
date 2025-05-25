@@ -6,9 +6,11 @@ import br.edu.gti.gestao_incidentes.entities.Area;
 import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.AreaRepository;
+import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class AreaService {
     private final AreaRepository areaRepository;
     private final AreaMapper areaMapper;
 
-    public Area create(AreaRequestDTO areaRequestDTO) {
+    public Area create(@Validated(OnCreate.class) AreaRequestDTO areaRequestDTO) {
         try {
             Area area = areaMapper.toEntity(areaRequestDTO);
             return areaRepository.save(area);

@@ -4,13 +4,15 @@ import br.edu.gti.gestao_incidentes.dto.mappers.AssetMapper;
 import br.edu.gti.gestao_incidentes.dto.requests.AssetRequestDTO;
 import br.edu.gti.gestao_incidentes.entities.Area;
 import br.edu.gti.gestao_incidentes.entities.Asset;
-import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.AreaRepository;
 import br.edu.gti.gestao_incidentes.repository.AssetRepository;
+import br.edu.gti.gestao_incidentes.validation.OnCreate;
+import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class AssetService {
     private final AreaRepository areaRepository;
     private final AssetMapper assetMapper;
 
-    public Asset create(Long responsibleAreaId, AssetRequestDTO assetRequestDTO) {
+    public Asset create(Long responsibleAreaId, @Validated(OnCreate.class) AssetRequestDTO assetRequestDTO) {
         try {
             Asset asset = assetMapper.toEntity(assetRequestDTO);
             Area responsibleArea = areaRepository.findById(responsibleAreaId)
@@ -35,7 +37,7 @@ public class AssetService {
     }
 
     public List<Asset> findByAreaId(Long responsibleAreaId) {
-        if (!areaRepository.existsById(responsibleAreaId)) {
+        if (!areaRepository.existsById(responsibleAreaId)){
             throw new NoRegisterException(responsibleAreaId);
         }
         return assetRepository.findByResponsibleArea_Id(responsibleAreaId);
