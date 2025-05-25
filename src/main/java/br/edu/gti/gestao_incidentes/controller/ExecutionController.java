@@ -52,7 +52,7 @@ public class ExecutionController {
         return ResponseEntity.ok(executions);
     }
 
-    @PutMapping("/finish/{id}")
+    @PutMapping("/finish/{executionId}")
     public ResponseEntity<?> finishExecution(@PathVariable Long executionId) {
         Long userId = JwtService.getUserIdFromToken();
         try {

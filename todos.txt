@@ -1,4 +1,2 @@
-//TODO verificar necessidade de retornar DTOs contendo nomes (ou Ids) de entidades ao inves da própria entidade exemplo: asset deve retornar nome do plan e não o plan inteiro
-//TODO verificar dtos de requisição para receber ids e não entidades
-//TODO implementar em step e task os ids das demais entidades
 //TODO implementar função de apagar dados da tabela de tokes revogados
+//TODO execução retornando entidade ao invés de DTO, não autorizando o finish

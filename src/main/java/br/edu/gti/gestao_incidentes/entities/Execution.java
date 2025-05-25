@@ -20,14 +20,11 @@ public class Execution {
     @Column(name = "id_execution")
     private Long id;
 
-    //TODO Alterar para ManyToOne (usuário pode requisitar várias vezes)
-    //TODO verificar cascade type para não excluir o usuário caso exclua a execução
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "requester_id")
     private User requester;
 
-    //TODO Alterar para ManyToOne (usuário pode valdiar várias vezes)
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "validator_id")
     private User validator;
 

@@ -111,7 +111,7 @@ public class SecurityConfig {
                         // Criar step (manager)
                         .requestMatchers(HttpMethod.POST, "/api/v1/plans/*/step/create/**")
                         .hasAuthority("SCOPE_MANAGER")
-                        // Atualizar step (operator, manager) TODO: verificar setSatus para operador
+                        // Atualizar step (operator, manager)
                         .requestMatchers(HttpMethod.PUT, "/api/v1/plans/*/step/update/**")
                         .hasAnyAuthority("SCOPE_OPERATOR", "SCOPE_MANAGER")
                         // Deletar step (manager)
@@ -122,7 +122,7 @@ public class SecurityConfig {
                         // Criar task (manager)
                         .requestMatchers(HttpMethod.POST, "/api/v1/step/*/task/create/**")
                         .hasAuthority("SCOPE_MANAGER")
-                        // Atualizar task (operator, manager) TODO: verificar setSatus para operador
+                        // Atualizar task (operator, manager)
                         .requestMatchers(HttpMethod.PUT, "/api/v1/step/*/task/update/**")
                         .hasAnyAuthority("SCOPE_OPERATOR", "SCOPE_MANAGER")
                         // Deletar task (manager)
