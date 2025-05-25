@@ -9,11 +9,9 @@ import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.ActionPlanRepository;
 import br.edu.gti.gestao_incidentes.repository.StepRepository;
-import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
@@ -24,7 +22,7 @@ public class StepService {
     private final ActionPlanRepository planRepository;
     private final StepMapper stepMapper;
 
-    public StepResponseDTO create(Long planId, @Validated(OnCreate.class) StepRequestDTO stepRequestDTO) {
+    public StepResponseDTO create(Long planId, StepRequestDTO stepRequestDTO) {
         try {
             Step step = stepMapper.toEntity(stepRequestDTO);
             ActionPlan plan = planRepository.findById(planId)
@@ -40,7 +38,7 @@ public class StepService {
 
     public List<Step> findByPlanId(Long planId) {
 
-        if (!planRepository.existsById(planId)){
+        if (!planRepository.existsById(planId)) {
             throw new NoRegisterException(planId);
         }
         return stepRepository.findByActionPlan_Id(planId);

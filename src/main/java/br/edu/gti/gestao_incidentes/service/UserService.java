@@ -5,17 +5,14 @@ import br.edu.gti.gestao_incidentes.dto.requests.UserRequestDTO;
 import br.edu.gti.gestao_incidentes.dto.responses.UserResponseDTO;
 import br.edu.gti.gestao_incidentes.entities.Area;
 import br.edu.gti.gestao_incidentes.entities.user.User;
+import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.AreaRepository;
 import br.edu.gti.gestao_incidentes.repository.UserRepository;
-import br.edu.gti.gestao_incidentes.validation.OnCreate;
-import br.edu.gti.gestao_incidentes.validation.OnUpdate;
-import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
@@ -28,7 +25,7 @@ public class UserService {
     private final UserMapper userMapper;
 
     //TODO tratar corretamente exceção de unicidade
-    public UserResponseDTO create(Long actuationAreaId, @Validated(OnCreate.class) UserRequestDTO userRequestDTO) {
+    public UserResponseDTO create(Long actuationAreaId, UserRequestDTO userRequestDTO) {
         try {
             User user = userMapper.toEntity(userRequestDTO);
             Area actuationArea = areaRepository.findById(actuationAreaId)
@@ -54,7 +51,7 @@ public class UserService {
     }
 
     //TODO implementar alteração de área de atuação
-    public UserResponseDTO update(Long id, @Validated(OnUpdate.class) UserRequestDTO userRequestDTO) {
+    public UserResponseDTO update(Long id, UserRequestDTO userRequestDTO) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NoRegisterException(id));
         try {
