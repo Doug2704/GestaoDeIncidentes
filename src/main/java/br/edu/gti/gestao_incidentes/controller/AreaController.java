@@ -5,6 +5,7 @@ import br.edu.gti.gestao_incidentes.entities.Area;
 import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.service.AreaService;
+import br.edu.gti.gestao_incidentes.service.JwtService;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import br.edu.gti.gestao_incidentes.validation.OnUpdate;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,9 @@ public class AreaController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createArea(@RequestBody @Validated(OnCreate.class) AreaRequestDTO areaRequestDTO) {
+        Long userId = JwtService.getUserIdFromToken();
         try {
-            Area savedArea = areaService.create(areaRequestDTO);
+            Area savedArea = areaService.create(areaRequestDTO, userId);
             URI local = URI.create("/" + savedArea.getId());
             return ResponseEntity.created(local).body(savedArea);
 

@@ -6,6 +6,7 @@ import br.edu.gti.gestao_incidentes.entities.Area;
 import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.AreaRepository;
+import br.edu.gti.gestao_incidentes.repository.UserRepository;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,11 +20,13 @@ import java.util.List;
 public class AreaService {
     private final AreaRepository areaRepository;
     private final AreaMapper areaMapper;
+    private final AuditLogService auditLogService;
 
-    public Area create(@Validated(OnCreate.class) AreaRequestDTO areaRequestDTO) {
+    public Area create(@Validated(OnCreate.class) AreaRequestDTO areaRequestDTO, Long userId) {
         try {
-            Area area = areaMapper.toEntity(areaRequestDTO);
-            return areaRepository.save(area);
+            Area area = areaRepository.save(areaMapper.toEntity(areaRequestDTO));
+            auditLogService.log(userId, "criou", area);
+            return (area);
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);
         }
@@ -51,5 +54,6 @@ public class AreaService {
         Area area = areaRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
         areaRepository.delete(area);
     }
+
 }
 

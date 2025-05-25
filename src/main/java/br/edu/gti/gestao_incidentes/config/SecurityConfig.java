@@ -64,6 +64,10 @@ public class SecurityConfig {
                                 "/api/v1/*/find/**", "/api/v1/*/*/*/find/**"
                         ).hasAnyAuthority("SCOPE_OPERATOR", "SCOPE_MANAGER", "SCOPE_ADMIN")
 
+                        // ===== LOGS =====
+                        .requestMatchers("/api/v1/audit/**")
+                        .hasAuthority("SCOPE_ADMIN")
+
                         // ===== USERS =====
                         // Criar usuário (admin)
                         .requestMatchers(HttpMethod.POST, "/api/v1/areas/*/users/create/**")
