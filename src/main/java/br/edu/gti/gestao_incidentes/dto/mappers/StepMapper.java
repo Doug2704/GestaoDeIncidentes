@@ -45,7 +45,6 @@ public class StepMapper {
         if (stepRequestDTO.title() != null) step.setTitle(stepRequestDTO.title());
         if (stepRequestDTO.actionRequestDTOS() != null)
             step.setActions(actionMapper.toEntityList(step, stepRequestDTO.actionRequestDTOS()));
-        if (stepRequestDTO.status() != null) step.setStatus(stepRequestDTO.status());
     }
 
     public List<Step> toEntityList(ActionPlan plan, List<StepRequestDTO> stepRequestDTOs) {

@@ -2,14 +2,12 @@ package br.edu.gti.gestao_incidentes.controller;
 
 import br.edu.gti.gestao_incidentes.dto.requests.UserRequestDTO;
 import br.edu.gti.gestao_incidentes.dto.responses.UserResponseDTO;
-import br.edu.gti.gestao_incidentes.entities.Asset;
-import br.edu.gti.gestao_incidentes.entities.user.User;
+import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
+import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.service.UserService;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import br.edu.gti.gestao_incidentes.validation.OnUpdate;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -31,7 +29,7 @@ public class UserController {
             URI local = URI.create("/" + savedUser.id());
             return ResponseEntity.created(local).body(savedUser);
 
-        } catch (DataIntegrityViolationException e) {
+        } catch (UniqueFieldViolationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         } catch (RuntimeException e) {
             return ResponseEntity.ok(e.getMessage());
@@ -44,7 +42,7 @@ public class UserController {
             UserResponseDTO foundUser = userService.findById(id);
             return ResponseEntity.ok(foundUser);
 
-        } catch (EntityNotFoundException e) {
+        } catch (NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -60,7 +58,7 @@ public class UserController {
         try {
             UserResponseDTO updatedUser = userService.update(id, user);
             return ResponseEntity.ok(updatedUser);
-        } catch (EntityNotFoundException e) {
+        } catch (UniqueFieldViolationException | NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -70,7 +68,7 @@ public class UserController {
         try {
             userService.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuário excluído");
-        } catch (EntityNotFoundException e) {
+        } catch (NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

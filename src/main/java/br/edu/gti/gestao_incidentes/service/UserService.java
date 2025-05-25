@@ -27,7 +27,6 @@ public class UserService {
     private final AreaRepository areaRepository;
     private final UserMapper userMapper;
 
-    //TODO tratar corretamente exceção de unicidade
     public UserResponseDTO create(Long actuationAreaId, @Validated(OnCreate.class) UserRequestDTO userRequestDTO) {
         try {
             User user = userMapper.toEntity(userRequestDTO);

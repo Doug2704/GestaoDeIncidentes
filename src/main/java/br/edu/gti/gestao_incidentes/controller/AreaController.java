@@ -2,12 +2,12 @@ package br.edu.gti.gestao_incidentes.controller;
 
 import br.edu.gti.gestao_incidentes.dto.requests.AreaRequestDTO;
 import br.edu.gti.gestao_incidentes.entities.Area;
+import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
+import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.service.AreaService;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import br.edu.gti.gestao_incidentes.validation.OnUpdate;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +22,6 @@ import java.util.List;
 public class AreaController {
     private final AreaService areaService;
 
-    //TODO verificar exceções
     @PostMapping("/create")
     public ResponseEntity<?> createArea(@RequestBody @Validated(OnCreate.class) AreaRequestDTO areaRequestDTO) {
         try {
@@ -30,7 +29,7 @@ public class AreaController {
             URI local = URI.create("/" + savedArea.getId());
             return ResponseEntity.created(local).body(savedArea);
 
-        } catch (DataIntegrityViolationException e) {
+        } catch (UniqueFieldViolationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         } catch (RuntimeException e) {
             return ResponseEntity.ok(e.getMessage());
@@ -44,7 +43,7 @@ public class AreaController {
             Area foundArea = areaService.findById(id);
             return ResponseEntity.ok(foundArea);
 
-        } catch (EntityNotFoundException e) {
+        } catch (NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -60,7 +59,7 @@ public class AreaController {
         try {
             Area updatedarea = areaService.update(id, area);
             return ResponseEntity.ok(updatedarea);
-        } catch (EntityNotFoundException e) {
+        } catch (UniqueFieldViolationException | NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -70,7 +69,7 @@ public class AreaController {
         try {
             areaService.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Área excluída");
-        } catch (EntityNotFoundException e) {
+        } catch (NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

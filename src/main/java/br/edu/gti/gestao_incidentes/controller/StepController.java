@@ -3,12 +3,12 @@ package br.edu.gti.gestao_incidentes.controller;
 import br.edu.gti.gestao_incidentes.dto.requests.StepRequestDTO;
 import br.edu.gti.gestao_incidentes.dto.responses.StepResponseDTO;
 import br.edu.gti.gestao_incidentes.entities.Step;
+import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
+import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.service.StepService;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import br.edu.gti.gestao_incidentes.validation.OnUpdate;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,7 +30,7 @@ public class StepController {
             URI local = URI.create("/" + savedStep.id());
             return ResponseEntity.created(local).body(savedStep);
 
-        } catch (DataIntegrityViolationException e) {
+        } catch (UniqueFieldViolationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         } catch (RuntimeException e) {
             return ResponseEntity.ok(e.getMessage());
@@ -43,7 +43,7 @@ public class StepController {
             Step foundStep = stepService.findById(id);
             return ResponseEntity.ok(foundStep);
 
-        } catch (EntityNotFoundException e) {
+        } catch (NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -59,7 +59,7 @@ public class StepController {
         try {
             Step actionStep = stepService.update(id, stepRequestDTO);
             return ResponseEntity.ok(actionStep);
-        } catch (EntityNotFoundException e) {
+        } catch (UniqueFieldViolationException | NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -69,7 +69,7 @@ public class StepController {
         try {
             stepService.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Etapa excluída");
-        } catch (EntityNotFoundException e) {
+        } catch (NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

@@ -1,16 +1,13 @@
 package br.edu.gti.gestao_incidentes.controller;
 
-import br.edu.gti.gestao_incidentes.config.SecurityConfig;
 import br.edu.gti.gestao_incidentes.dto.requests.LoginRequestDTO;
 import br.edu.gti.gestao_incidentes.dto.responses.TokenResponseDTO;
-import br.edu.gti.gestao_incidentes.repository.RevokedTokenRepository;
 import br.edu.gti.gestao_incidentes.repository.UserRepository;
 import br.edu.gti.gestao_incidentes.service.JwtService;
 import br.edu.gti.gestao_incidentes.service.RevokedTokenService;
 import br.edu.gti.gestao_incidentes.service.UserDetailsServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

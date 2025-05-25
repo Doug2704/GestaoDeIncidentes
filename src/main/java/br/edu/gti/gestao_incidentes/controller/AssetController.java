@@ -2,12 +2,12 @@ package br.edu.gti.gestao_incidentes.controller;
 
 import br.edu.gti.gestao_incidentes.dto.requests.AssetRequestDTO;
 import br.edu.gti.gestao_incidentes.entities.Asset;
+import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
+import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.service.AssetService;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import br.edu.gti.gestao_incidentes.validation.OnUpdate;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -29,7 +29,7 @@ public class AssetController {
             URI local = URI.create("/" + savedasset.getId());
             return ResponseEntity.created(local).body(savedasset);
 
-        } catch (DataIntegrityViolationException e) {
+        } catch (UniqueFieldViolationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         } catch (RuntimeException e) {
             return ResponseEntity.ok(e.getMessage());
@@ -43,7 +43,7 @@ public class AssetController {
             Asset foundasset = assetService.findById(id);
             return ResponseEntity.ok(foundasset);
 
-        } catch (EntityNotFoundException e) {
+        } catch (NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -59,7 +59,7 @@ public class AssetController {
         try {
             Asset updatedasset = assetService.update(id, asset);
             return ResponseEntity.ok(updatedasset);
-        } catch (EntityNotFoundException e) {
+        } catch (UniqueFieldViolationException | NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -69,7 +69,7 @@ public class AssetController {
         try {
             assetService.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Ativo excluído");
-        } catch (EntityNotFoundException e) {
+        } catch (NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

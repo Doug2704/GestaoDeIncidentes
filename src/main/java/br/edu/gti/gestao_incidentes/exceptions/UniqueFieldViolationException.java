@@ -3,26 +3,31 @@ package br.edu.gti.gestao_incidentes.exceptions;
 import lombok.Getter;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Getter
-public class UniqueFieldViolationException extends RuntimeException {
+public class UniqueFieldViolationException extends DataIntegrityViolationException {
 
-    private final List<String> messages;
+    private final String fieldName;
 
     public UniqueFieldViolationException(DataIntegrityViolationException ex) {
         super(ex.getMessage());
-        this.messages = new ArrayList<>();
-        // Adicionar a mensagem personalizada de acordo com o campo violado
-        if (ex.getMessage().contains("username")) {
-            messages.add("Nome de usuário já em uso");
-        } else if (ex.getMessage().contains("email")) {
-            messages.add("Email já em uso");
+
+        // Expressão regular para extrair o nome do campo da mensagem do PostgreSQL
+        String regex = "Detalhe: Chave \\((.*?)\\)=";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(ex.getMessage());
+
+        if (matcher.find()) {
+            this.fieldName = matcher.group(1);
         } else {
-            messages.add("Erro de integridade de dados");
+            this.fieldName = "campo_desconhecido";
         }
     }
+
+    @Override
+    public String getMessage() {
+        return String.format("O campo '%s' já está em uso.", fieldName);
+    }
 }
-
-

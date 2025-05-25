@@ -1,13 +1,12 @@
 package br.edu.gti.gestao_incidentes.controller;
 
 import br.edu.gti.gestao_incidentes.dto.responses.ExecutionResponseDTO;
-import br.edu.gti.gestao_incidentes.entities.Execution;
+import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
+import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.service.ExecutionService;
 import br.edu.gti.gestao_incidentes.service.JwtService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +29,7 @@ public class ExecutionController {
             URI local = URI.create("/" + savedExecution.id());
             return ResponseEntity.created(local).body(savedExecution);
 
-        } catch (DataIntegrityViolationException e) {
+        } catch (UniqueFieldViolationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         } catch (RuntimeException e) {
             return ResponseEntity.ok(e.getMessage());
@@ -44,7 +43,7 @@ public class ExecutionController {
             ExecutionResponseDTO foundExecution = executionService.findById(id);
             return ResponseEntity.ok(foundExecution);
 
-        } catch (EntityNotFoundException e) {
+        } catch (NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -61,7 +60,7 @@ public class ExecutionController {
         try {
             ExecutionResponseDTO updatedExecution = executionService.finish(executionId, userId);
             return ResponseEntity.ok(updatedExecution);
-        } catch (EntityNotFoundException e) {
+        } catch (NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getCause());
         }
     }
@@ -71,7 +70,7 @@ public class ExecutionController {
         try {
             executionService.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Execução excluída");
-        } catch (EntityNotFoundException e) {
+        } catch (NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

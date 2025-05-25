@@ -24,12 +24,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<Object> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
-
-        UniqueFieldViolationException customUniqueFieldViolationExceptionception = new UniqueFieldViolationException(ex);
-        return new ResponseEntity<>(customUniqueFieldViolationExceptionception.getMessages(), HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler(DataIntegrityViolationException.class)
+//    public ResponseEntity<Object> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+//
+//        UniqueFieldViolationException customUniqueFieldViolationExceptionception = new UniqueFieldViolationException(ex);
+//        return new ResponseEntity<>(customUniqueFieldViolationExceptionception.getMessages(), HttpStatus.BAD_REQUEST);
+//    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleAllExceptions(Exception ex) {

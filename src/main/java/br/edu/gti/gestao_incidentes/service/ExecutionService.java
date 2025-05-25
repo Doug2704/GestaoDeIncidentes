@@ -7,11 +7,11 @@ import br.edu.gti.gestao_incidentes.entities.Execution;
 import br.edu.gti.gestao_incidentes.entities.Step;
 import br.edu.gti.gestao_incidentes.entities.user.User;
 import br.edu.gti.gestao_incidentes.enums.Status;
+import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.repository.ActionPlanRepository;
 import br.edu.gti.gestao_incidentes.repository.ExecutionRepository;
 import br.edu.gti.gestao_incidentes.repository.UserRepository;
-import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -64,8 +64,8 @@ public class ExecutionService {
 
             User validator = userRepository.findById(requesterId).get();
             execution.setValidator(validator);
-            execution.setStatus(Status.FINISHED);
             execution.setFinishDate(LocalDateTime.now());
+            execution.setStatus(Status.FINISHED);
 
             return executionMapper.toDto(executionRepository.save(execution));
         } catch (DataIntegrityViolationException e) {
@@ -83,7 +83,6 @@ public class ExecutionService {
         steps.forEach(step -> step.setStatus(Status.WAITING));
     }
 
-    //TODO verificar se todas as ações estão com boolean "done" como true antes de setar finished em step
     private void validateAllStepsFinished(ActionPlan actionPlan) {
         List<Step> steps = actionPlan.getSteps();
         for (Step step : steps) {
@@ -92,4 +91,3 @@ public class ExecutionService {
         }
     }
 }
-

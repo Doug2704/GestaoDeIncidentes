@@ -3,6 +3,7 @@ package br.edu.gti.gestao_incidentes.service;
 import br.edu.gti.gestao_incidentes.dto.mappers.StepMapper;
 import br.edu.gti.gestao_incidentes.dto.requests.StepRequestDTO;
 import br.edu.gti.gestao_incidentes.dto.responses.StepResponseDTO;
+import br.edu.gti.gestao_incidentes.entities.Action;
 import br.edu.gti.gestao_incidentes.entities.ActionPlan;
 import br.edu.gti.gestao_incidentes.entities.Step;
 import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
@@ -40,7 +41,7 @@ public class StepService {
 
     public List<Step> findByPlanId(Long planId) {
 
-        if (!planRepository.existsById(planId)){
+        if (!planRepository.existsById(planId)) {
             throw new NoRegisterException(planId);
         }
         return stepRepository.findByActionPlan_Id(planId);
@@ -54,6 +55,7 @@ public class StepService {
         Step step = stepRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
         try {
             stepMapper.applyChanges(stepRequestDTO, step);
+            if (stepRequestDTO.status() != null && areAllActionsDone(step)) step.setStatus(stepRequestDTO.status());
             return stepRepository.save(step);
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);
@@ -64,5 +66,13 @@ public class StepService {
         Step step = stepRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
         stepRepository.delete(step);
     }
-}
 
+    public boolean areAllActionsDone(Step step) {
+        List<Action> actions = step.getActions();
+        for (Action action : actions) {
+            if (!action.isDone())// return false;
+        throw new RuntimeException("Conclua todas as ações dessa etapa.");
+        }
+        return true;
+    }
+}

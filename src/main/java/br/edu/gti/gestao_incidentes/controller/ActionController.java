@@ -3,12 +3,12 @@ package br.edu.gti.gestao_incidentes.controller;
 import br.edu.gti.gestao_incidentes.dto.requests.ActionRequestDTO;
 import br.edu.gti.gestao_incidentes.dto.responses.ActionResponseDTO;
 import br.edu.gti.gestao_incidentes.entities.Action;
+import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
+import br.edu.gti.gestao_incidentes.exceptions.UniqueFieldViolationException;
 import br.edu.gti.gestao_incidentes.service.ActionService;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import br.edu.gti.gestao_incidentes.validation.OnUpdate;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -25,13 +25,13 @@ public class ActionController {
 
     //TODO verificar os paths em acordo com o padrão http
     @PostMapping("/create")
-    public ResponseEntity<?> createTask(@PathVariable Long stepId, @RequestBody @Validated(OnCreate.class) ActionRequestDTO actionRequestDTO) {
+    public ResponseEntity<?> createAction(@PathVariable Long stepId, @RequestBody @Validated(OnCreate.class) ActionRequestDTO actionRequestDTO) {
         try {
             ActionResponseDTO savedAction = actionService.create(stepId, actionRequestDTO);
             URI local = URI.create("/" + savedAction.id());
             return ResponseEntity.created(local).body(savedAction);
 
-        } catch (DataIntegrityViolationException e) {
+        } catch (UniqueFieldViolationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         } catch (RuntimeException e) {
             return ResponseEntity.ok(e.getMessage());
@@ -45,23 +45,23 @@ public class ActionController {
             Action foundAction = actionService.findById(id);
             return ResponseEntity.ok(foundAction);
 
-        } catch (EntityNotFoundException e) {
+        } catch (UniqueFieldViolationException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @GetMapping("/find/all")
-    public ResponseEntity<List<Action>> findByPlanId(@PathVariable Long stepId) {
+    public ResponseEntity<List<Action>> findByStepId(@PathVariable Long stepId) {
         List<Action> actions = actionService.findByStepId(stepId);
         return ResponseEntity.ok(actions);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateTask(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) ActionRequestDTO actionRequestDTO) {
+    public ResponseEntity<?> updateAction(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) ActionRequestDTO actionRequestDTO) {
         try {
             Action action = actionService.update(id, actionRequestDTO);
             return ResponseEntity.ok(action);
-        } catch (EntityNotFoundException e) {
+        }catch (UniqueFieldViolationException | NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -71,7 +71,7 @@ public class ActionController {
         try {
             actionService.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Ação excluída");
-        } catch (EntityNotFoundException e) {
+        } catch (NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -81,7 +81,7 @@ public class ActionController {
         try {
             actionService.done(id);
             return ResponseEntity.ok().body("Ação concluída");
-        } catch (EntityNotFoundException e) {
+        } catch (NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

@@ -11,6 +11,7 @@ import br.edu.gti.gestao_incidentes.repository.ActionRepository;
 import br.edu.gti.gestao_incidentes.repository.StepRepository;
 import br.edu.gti.gestao_incidentes.validation.OnCreate;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ActionService {
@@ -25,7 +27,6 @@ public class ActionService {
     private final StepRepository stepRepository;
     private final ActionMapper actionMapper;
 
-    //TODO verificar @validate nos services e controllers (estão duplicados)
     public ActionResponseDTO create(Long stepId, @Validated(OnCreate.class) ActionRequestDTO actionRequestDTO) {
         try {
             Action action = actionMapper.toEntity(actionRequestDTO);
@@ -68,6 +69,7 @@ public class ActionService {
     public void done(Long id) {
         Action action = actionRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
         action.setDone(true);
+        actionRepository.save(action);
     }
 }
 
