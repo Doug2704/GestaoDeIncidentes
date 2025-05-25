@@ -1,10 +1,12 @@
 package br.edu.gti.gestao_incidentes.controller;
 
+import br.edu.gti.gestao_incidentes.dto.responses.ExecutionResponseDTO;
 import br.edu.gti.gestao_incidentes.entities.Execution;
 import br.edu.gti.gestao_incidentes.service.ExecutionService;
 import br.edu.gti.gestao_incidentes.service.JwtService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("api/v1/plans/{planId}/executions")
 @RequiredArgsConstructor
@@ -23,8 +26,8 @@ public class ExecutionController {
     public ResponseEntity<?> startExecution(@PathVariable Long planId) {
         Long userId = JwtService.getUserIdFromToken();
         try {
-            Execution savedExecution = executionService.start(planId, userId);
-            URI local = URI.create("/" + savedExecution.getId());
+            ExecutionResponseDTO savedExecution = executionService.start(planId, userId);
+            URI local = URI.create("/" + savedExecution.id());
             return ResponseEntity.created(local).body(savedExecution);
 
         } catch (DataIntegrityViolationException e) {
@@ -38,7 +41,7 @@ public class ExecutionController {
     @GetMapping("/find/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         try {
-            Execution foundExecution = executionService.findById(id);
+            ExecutionResponseDTO foundExecution = executionService.findById(id);
             return ResponseEntity.ok(foundExecution);
 
         } catch (EntityNotFoundException e) {
@@ -47,8 +50,8 @@ public class ExecutionController {
     }
 
     @GetMapping("/find/all")
-    public ResponseEntity<List<Execution>> findByPlanId(@PathVariable Long planId) {
-        List<Execution> executions = executionService.findByActionPlan(planId);
+    public ResponseEntity<?> findByPlanId(@PathVariable Long planId) {
+        List<ExecutionResponseDTO> executions = executionService.findByActionPlan(planId);
         return ResponseEntity.ok(executions);
     }
 
@@ -56,10 +59,10 @@ public class ExecutionController {
     public ResponseEntity<?> finishExecution(@PathVariable Long executionId) {
         Long userId = JwtService.getUserIdFromToken();
         try {
-            Execution updatedexecution = executionService.finish(executionId, userId);
-            return ResponseEntity.ok(updatedexecution);
+            ExecutionResponseDTO updatedExecution = executionService.finish(executionId, userId);
+            return ResponseEntity.ok(updatedExecution);
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getCause());
         }
     }
 

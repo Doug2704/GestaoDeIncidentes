@@ -1,5 +1,7 @@
 package br.edu.gti.gestao_incidentes.service;
 
+import br.edu.gti.gestao_incidentes.dto.mappers.ExecutionMapper;
+import br.edu.gti.gestao_incidentes.dto.responses.ExecutionResponseDTO;
 import br.edu.gti.gestao_incidentes.entities.ActionPlan;
 import br.edu.gti.gestao_incidentes.entities.Execution;
 import br.edu.gti.gestao_incidentes.entities.Step;
@@ -11,20 +13,23 @@ import br.edu.gti.gestao_incidentes.repository.ExecutionRepository;
 import br.edu.gti.gestao_incidentes.repository.UserRepository;
 import br.edu.gti.gestao_incidentes.exceptions.NoRegisterException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ExecutionService {
     private final ExecutionRepository executionRepository;
     private final ActionPlanRepository planRepository;
     private final UserRepository userRepository;
+    private final ExecutionMapper executionMapper;
 
-    public Execution start(Long actionPlanId, Long requesterId) {
+    public ExecutionResponseDTO start(Long actionPlanId, Long requesterId) {
         Execution execution = new Execution();
         ActionPlan actionPlan = planRepository.findById(actionPlanId).orElseThrow(() -> new NoRegisterException(actionPlanId));
         startSteps(actionPlan);
@@ -34,24 +39,25 @@ public class ExecutionService {
             execution.setRequester(requester);
             execution.setActionPlan(actionPlan);
 
-            return executionRepository.save(execution);
+            return executionMapper.toDto(executionRepository.save(execution));
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);
         }
     }
 
-    public List<Execution> findByActionPlan(Long planId) {
+    public List<ExecutionResponseDTO> findByActionPlan(Long planId) {
         if (!planRepository.existsById(planId)) {
             throw new NoRegisterException(planId);
         }
-        return executionRepository.findByActionPlan_id(planId);
+        return executionRepository.findByActionPlan_id(planId).stream().map(executionMapper::toDto).toList();
     }
 
-    public Execution findById(Long id) {
-        return executionRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
+    public ExecutionResponseDTO findById(Long id) {
+        Execution foundExecution = executionRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
+        return executionMapper.toDto(foundExecution);
     }
 
-    public Execution finish(Long executionId, Long requesterId) {
+    public ExecutionResponseDTO finish(Long executionId, Long requesterId) {
         Execution execution = executionRepository.findById(executionId).orElseThrow(() -> new NoRegisterException(executionId));
         try {
             validateAllStepsFinished(execution.getActionPlan());
@@ -61,7 +67,7 @@ public class ExecutionService {
             execution.setStatus(Status.FINISHED);
             execution.setFinishDate(LocalDateTime.now());
 
-            return executionRepository.save(execution);
+            return executionMapper.toDto(executionRepository.save(execution));
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);
         }
@@ -77,6 +83,7 @@ public class ExecutionService {
         steps.forEach(step -> step.setStatus(Status.WAITING));
     }
 
+    //TODO verificar se todas as ações estão com boolean "done" como true antes de setar finished em step
     private void validateAllStepsFinished(ActionPlan actionPlan) {
         List<Step> steps = actionPlan.getSteps();
         for (Step step : steps) {

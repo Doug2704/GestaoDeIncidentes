@@ -57,5 +57,6 @@ public class Execution {
 
     public void setValidator(User validator) {
         if (validator != getRequester()) this.validator = validator;
+        else throw new IllegalArgumentException("O validador não pode ser a mesma pessoa que iniciou o plano de ação");
     }
 }

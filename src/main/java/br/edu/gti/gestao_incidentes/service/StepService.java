@@ -17,7 +17,6 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
-//TODO verificar updates
 @Service
 @RequiredArgsConstructor
 public class StepService {

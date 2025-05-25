@@ -1,2 +1,8 @@
+                          Necessário Agora
+
 //TODO implementar função de apagar dados da tabela de tokes revogados
 //TODO execução retornando entidade ao invés de DTO, não autorizando o finish
+
+                           Melhorias Futuras
+
+//TODO verificar exceções personalizadas ou criar novas
