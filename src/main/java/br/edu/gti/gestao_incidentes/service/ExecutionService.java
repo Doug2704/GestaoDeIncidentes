@@ -28,6 +28,7 @@ public class ExecutionService {
     private final ActionPlanRepository planRepository;
     private final UserRepository userRepository;
     private final ExecutionMapper executionMapper;
+    private final AuditLogService auditLogService;
 
     public ExecutionResponseDTO start(Long actionPlanId, Long requesterId) {
         Execution execution = new Execution();

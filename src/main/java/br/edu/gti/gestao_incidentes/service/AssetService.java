@@ -22,6 +22,7 @@ public class AssetService {
     private final AssetRepository assetRepository;
     private final AreaRepository areaRepository;
     private final AssetMapper assetMapper;
+    private final AuditLogService auditLogService;
 
     public Asset create(Long responsibleAreaId, @Validated(OnCreate.class) AssetRequestDTO assetRequestDTO) {
         try {

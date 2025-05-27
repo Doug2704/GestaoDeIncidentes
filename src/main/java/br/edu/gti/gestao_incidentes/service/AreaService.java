@@ -40,18 +40,22 @@ public class AreaService {
         return areaRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
     }
 
-    public Area update(Long id, AreaRequestDTO areaRequestDTO) {
-        Area area = areaRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
+    //TODO resolver logs de update com base em qual dado foi alterado
+    public Area update(Long areaId, AreaRequestDTO areaRequestDTO) {
+        Area area = areaRepository.findById(areaId).orElseThrow(() -> new NoRegisterException(areaId));
         try {
             areaMapper.applyChanges(areaRequestDTO, area);
-            return areaRepository.save(area);
+            Area updatedArea = areaRepository.save(area);
+            //    auditLogService.log(userId, "alterou dados de ", area);
+            return updatedArea;
         } catch (DataIntegrityViolationException e) {
             throw new UniqueFieldViolationException(e);
         }
     }
 
-    public void delete(Long id) {
+    public void delete(Long id, Long userId) {
         Area area = areaRepository.findById(id).orElseThrow(() -> new NoRegisterException(id));
+        auditLogService.log(userId, "excluiu ", area);
         areaRepository.delete(area);
     }
 

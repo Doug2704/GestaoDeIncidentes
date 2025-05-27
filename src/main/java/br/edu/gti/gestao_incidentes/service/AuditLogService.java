@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import br.edu.gti.gestao_incidentes.entities.AuditLog;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,8 +53,8 @@ public class AuditLogService {
 
 
     public String toString(AuditLog log) {
-        return log.getUserProfile() + " " + log.getUserName() + " "
+        return "["+log.getUserProfile() + " com id: "+log.getUserId()+"] " + log.getUserName() + " "
                 + log.getAction() + " " + log.getEntityType() + " "
-                + log.getEntityName() + " às " + log.getActionDate();
+                + log.getEntityName() + " em " + log.getActionDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
 }

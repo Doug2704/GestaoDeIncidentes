@@ -24,6 +24,7 @@ public class StepService {
     private final StepRepository stepRepository;
     private final ActionPlanRepository planRepository;
     private final StepMapper stepMapper;
+    private final AuditLogService auditLogService;
 
     public StepResponseDTO create(Long planId, @Validated(OnCreate.class) StepRequestDTO stepRequestDTO) {
         try {

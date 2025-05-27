@@ -32,7 +32,7 @@ public class UserController {
         } catch (UniqueFieldViolationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         } catch (RuntimeException e) {
-            return ResponseEntity.ok(e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 

@@ -25,6 +25,7 @@ public class ActionPlanService {
     private final ActionPlanRepository planRepository;
     private final AreaRepository areaRepository;
     private final PlanMapper planMapper;
+    private final AuditLogService auditLogService;
 
     public PlanResponseDTO create(Long responsibleAreaId, @Validated(OnCreate.class) PlanRequestDTO planRequestDTO) {
         try {

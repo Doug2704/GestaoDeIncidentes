@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class ExecutionMapper {
     private final PlanMapper planMapper;
 
+    //TODO verificar formatação de horário e data
     public ExecutionResponseDTO toDto(Execution execution) {
         if (execution == null) return null;
 

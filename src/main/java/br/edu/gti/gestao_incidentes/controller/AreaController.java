@@ -34,7 +34,7 @@ public class AreaController {
         } catch (UniqueFieldViolationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         } catch (RuntimeException e) {
-            return ResponseEntity.ok(e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
 
     }
@@ -66,10 +66,11 @@ public class AreaController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteArea(@PathVariable Long id) {
+    @DeleteMapping("/delete/{areaId}")
+    public ResponseEntity<?> deleteArea(@PathVariable Long areaId) {
+        Long userId = JwtService.getUserIdFromToken();
         try {
-            areaService.delete(id);
+            areaService.delete(areaId, userId);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Área excluída");
         } catch (NoRegisterException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

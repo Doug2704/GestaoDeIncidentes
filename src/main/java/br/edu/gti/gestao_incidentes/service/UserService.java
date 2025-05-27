@@ -26,6 +26,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final AreaRepository areaRepository;
     private final UserMapper userMapper;
+    private final AuditLogService auditLogService;
 
     public UserResponseDTO create(Long actuationAreaId, @Validated(OnCreate.class) UserRequestDTO userRequestDTO) {
         try {
