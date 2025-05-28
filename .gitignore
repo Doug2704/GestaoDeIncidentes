@@ -35,5 +35,3 @@ build/
 .vscode/
 
 # Ignorar chaves privadas/públicas
-src/main/resources/app.key
-src/main/resources/app.pub
