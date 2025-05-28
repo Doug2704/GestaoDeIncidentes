@@ -9,7 +9,7 @@ services:
     env_file: .env
 
     environment:
-      SPRING_DATASOURCE_URL: ${DEPLOY_URL}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://switchyard.proxy.rlwy.net:47484/railway
       SPRING_DATASOURCE_USERNAME: ${DEPLOY_USER}
       SPRING_DATASOURCE_PASSWORD: ${DEPLOY_PASSWORD}
       SPRING_PROFILES_ACTIVE: dev
