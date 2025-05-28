@@ -6,6 +6,8 @@ services:
     image: gestaodeincidentes
     ports:
       - "8081:8080"
+    env_file: .env
+
     environment:
       SPRING_DATASOURCE_URL: ${DEPLOY_URL}
       SPRING_DATASOURCE_USERNAME: ${DEPLOY_USER}
