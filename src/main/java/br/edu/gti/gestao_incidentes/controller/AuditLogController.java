@@ -15,7 +15,7 @@ import java.util.List;
 public class AuditLogController {
     private final AuditLogService auditLogService;
 
-    @GetMapping("logs")
+    @GetMapping("/logs")
     public ResponseEntity<?> getLogs() {
         List<String> logs = auditLogService.getLogs();
         return ResponseEntity.ok(logs);

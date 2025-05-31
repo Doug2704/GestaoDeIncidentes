@@ -18,7 +18,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/steps/{stepId}/tasks")
+@RequestMapping("api/v1/steps/{stepId}/actions")
 @RequiredArgsConstructor
 public class ActionController {
     private final ActionService actionService;

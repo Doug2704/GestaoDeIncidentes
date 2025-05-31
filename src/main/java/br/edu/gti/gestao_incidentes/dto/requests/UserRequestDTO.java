@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Size;
 public record UserRequestDTO(
 
         @NotBlank(message = "Nome é obrigatório", groups = OnCreate.class)
-        @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s]+$", message = "Utilize apenas letras no nome")
+        @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s]+$", message = "Utilize apenas letras no nome",  groups = OnCreate.class)
         @Size(min = 2, message = "Nome precisa ter, pelo menos, {min} caracteres.")
         String name,
 
